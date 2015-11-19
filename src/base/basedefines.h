@@ -2,9 +2,24 @@
 #define ALI_OPENSEARCH_BASE_BASEDEFINES_H_
 
 #include <string>
-#include <memory>
 
 namespace aos{
+
+
+  // Public request filed name defines
+  const char REQ_VERSION[] = "Version";
+  const char REQ_ACCESS_KEY_ID[] = "AccessKeyId";
+  const char REQ_SIGNATURE[] = "Signature";
+  const char REQ_SIGNATURE_METHOD[] = "SignatureMethod";
+  const char REQ_TIMESTAMP[] = "Timestamp";
+  const char REQ_SIGNATURE_VERSION[] = "SignatureVersion";
+  const char REQ_SIGNATURE_NONCE[] = "SignatureNonce";
+
+  // Public const defines
+  const char ALI_OPENSEARCH_PROTO_VERSION[] = "v2";
+  const char ALI_OPENSEARCH_SIGNATURE_METHOD_HMAC_SHA1[] = "HMAC-SHA1";
+  const char ALI_OPENSEARCH_SIGNATURE_VERION[] = "1.0";
+
 #define AOS_ERROR_MAP_DEF(NAME, NCODE, DESCRIBE)\
   const int ERROR_##NCODE = NCODE;\
   const int NAME = NCODE;\

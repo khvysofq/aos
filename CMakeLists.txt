@@ -52,6 +52,7 @@ ELSEIF(WIN32)
 		SET(ALIYUN_OPENSEARCH_LINK_LIB
 			libcurl_imp.lib
 			jsoncpp.lib
+			winmm.lib
 			)
 	elseif(CMAKE_BUILD_TYPE MATCHES RELEASE)
 		MESSAGE(STATUS "       Release Mode")
@@ -62,6 +63,7 @@ ELSEIF(WIN32)
 		SET(ALIYUN_OPENSEARCH_LINK_LIB
 			libcurl_imp.lib
 			jsoncpp.lib
+			winmm.lib
 			)
 	endif()
 ENDIF()
@@ -125,6 +127,9 @@ ENDIF()
 ## Setp 3
 ADD_SUBDIRECTORY(test/basictest)
 ADD_SUBDIRECTORY(test/klabeltest)
+ADD_SUBDIRECTORY(test/helpteset)
+
+
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(third_part/curl)
 ADD_SUBDIRECTORY(third_part/jsoncpp)

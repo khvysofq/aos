@@ -32,19 +32,49 @@ endforeach()
 SET(SRC_LIST 
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/noncopyable.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/baseinclude.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/basictypes.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.cpp
 	
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
 	)
 
 SOURCE_GROUP(base FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/noncopyable.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/baseinclude.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/basictypes.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.cpp
 	)
 	
 SOURCE_GROUP(ali_search FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
 	)
 
 #########################################################################

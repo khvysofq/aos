@@ -1,6 +1,8 @@
 #include "base/basedefines.h"
 
 namespace aos{
+
+
   // Common mistakes
   AOS_ERROR_MAP_DEF(INTERNAL_SERVER_ERROR, 1000, "Format mistaks or timeout");
   AOS_ERROR_MAP_DEF(SORT_QUERY_PARAMER_ERROR, 2112, "sort expression warning");
