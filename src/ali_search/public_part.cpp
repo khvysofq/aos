@@ -4,8 +4,11 @@
 
 namespace aos{
 
-  PublicPartManager::PublicPartManager(const std::string &access_key_id,
-    const std::string &access_key_secret){
+  PublicPartManager::PublicPartManager(const std::string &api_domain, 
+    const std::string &access_key_id,
+    const std::string &access_key_secret) 
+    :access_key_secret_(access_key_secret + "&"),
+    api_domain_(api_domain){
     InitPublicPart(access_key_id, access_key_secret);
   }
 
@@ -43,5 +46,7 @@ namespace aos{
     kvs = keyvalues_;
     kvs[REQ_TIMESTAMP] = HelpMethos::GetCurrentUTCTime();
     kvs[REQ_SIGNATURE_NONCE] = HelpMethos::GetSignatureNonce();
+    //kvs[REQ_TIMESTAMP] = "2014-07-14T01:34:55Z";
+    //kvs[REQ_SIGNATURE_NONCE] = "14053016951271226";
   }
 }

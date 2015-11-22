@@ -39,6 +39,16 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basictypes.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.cpp
@@ -50,6 +60,8 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
 
 SOURCE_GROUP(base FILES
@@ -62,6 +74,16 @@ SOURCE_GROUP(base FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basictypes.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/timeutils.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	)
 	
 SOURCE_GROUP(ali_search FILES
@@ -75,6 +97,8 @@ SOURCE_GROUP(ali_search FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
 
 #########################################################################

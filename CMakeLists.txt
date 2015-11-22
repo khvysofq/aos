@@ -69,12 +69,13 @@ ELSEIF(WIN32)
 ENDIF()
 
 MESSAGE(STATUS "Step 4 : Add code source")
-# if(UNIX)
-	# ADD_DEFINITIONS()
-# elseif(WIN32)
-	# ADD_DEFINITIONS(
-	# )
-# endif()
+ if(UNIX)
+	 ADD_DEFINITIONS()
+ elseif(WIN32)
+	 ADD_DEFINITIONS(
+		 -D_CRT_SECURE_NO_WARNINGS
+	 )
+ endif()
 
 INCLUDE_DIRECTORIES(${ALIYUN_OPENSEARCH_INCLUDE_DIR})
 LINK_DIRECTORIES(${ALIYUN_OPENSEARCH_LIBRARY_DIR})
@@ -127,7 +128,14 @@ ENDIF()
 ## Setp 3
 ADD_SUBDIRECTORY(test/basictest)
 ADD_SUBDIRECTORY(test/klabeltest)
-ADD_SUBDIRECTORY(test/helpteset)
+ADD_SUBDIRECTORY(test/helptest)
+ADD_SUBDIRECTORY(test/agctest)
+ADD_SUBDIRECTORY(test/sha1test)
+ADD_SUBDIRECTORY(test/base64test)
+ADD_SUBDIRECTORY(test/urlencodetest)
+ADD_SUBDIRECTORY(test/appmanagertest)
+ADD_SUBDIRECTORY(test/pushtest)
+ADD_SUBDIRECTORY(test/qeurystanzatest)
 
 
 ADD_SUBDIRECTORY(src)

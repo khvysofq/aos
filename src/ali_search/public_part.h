@@ -12,11 +12,18 @@ namespace aos{
     public std::enable_shared_from_this<PublicPartManager>{
   public:
     typedef std::shared_ptr<PublicPartManager> Ptr;
-    PublicPartManager(const std::string &access_key_id,
+    PublicPartManager(const std::string &api_domain, 
+      const std::string &access_key_id,
       const std::string &access_key_secret);
 
     // Thread safe
     void CopyPublicPart(std::map<std::string, std::string> &kvs);
+    const std::string &access_key_secret() const{
+      return access_key_secret_;
+    }
+    const std::string &api_domain() const{
+      return api_domain_;
+    }
     virtual ~PublicPartManager();
   public:
     void InitPublicPart(const std::string &access_key_id,
@@ -24,6 +31,8 @@ namespace aos{
   private:
     std::map<std::string, std::string> keyvalues_;
     std::mutex kvs_mutex_;
+    std::string access_key_secret_;
+    std::string api_domain_;
   };
 
 } // namespace aos

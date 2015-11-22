@@ -14,10 +14,7 @@
 安装`CMake 2.8`以上的版本，然后为了保证源代码的清洁，在源代码目录下新建一个build目录，使用下面的命令生成相应的工程。
 
 ``` 
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG \
-	-DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF \ 
-	-DJSONCPP_WITH_TESTS=OFF \
-	-DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF \
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF
 ```
 
 
@@ -34,6 +31,14 @@ cmake .. -DCMAKE_BUILD_TYPE=DEBUG \
 - 不少于1篇英文使用示例文档(Markdown格式)
 - 单元测试必须通过valgrind验证，不能有内存泄露或者越界。
 
+## TODO 2015 11 22
+
+当前完成的状态与问题
+
+- 基础的签名流程、应用管理类、数据处理类、索引重建、错误日志功能已经完成。
+- 下拉提示的请求结构与其它结构不同，需要修正一下。
+- 搜索相关的流程有，但是对规划化请求的封装还不完全。
+- 所有的功能都没有经过严格测试，后面需要数据支持。
 
 ## license
 

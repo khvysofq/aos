@@ -127,7 +127,7 @@ typedef int socklen_t;
 
 // The following only works for C++
 #ifdef __cplusplus
-namespace talk_base {
+namespace aos {
   template<class T> inline T _min(T a, T b) { return (a > b) ? b : a; }
   template<class T> inline T _max(T a, T b) { return (a < b) ? b : a; }
 
