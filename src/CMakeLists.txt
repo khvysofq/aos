@@ -58,6 +58,8 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
@@ -95,6 +97,8 @@ SOURCE_GROUP(ali_search FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/keyvalue.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h

@@ -108,6 +108,18 @@ namespace aos{
   const char RES_GEL_SORT_MODE_ASC[] = "ASC";
   const char RES_GEL_SORT_MODE_DESC[] = "DESC";
 
+  // Search main
+  const char APP_SEARCH_URL[] = "/search";
+
+  const char RES_SEARCH_QUERY[] = "query";
+  const char RES_SEARCH_INDEX_NAME[] = "index_name";
+  const char RES_SEARCH_FETCH_FIELDS[] = "fetch_fields";
+  const char RES_SEAERCH_QP[] = "qp";
+  const char RES_SEARCH_DISABLE[] = "disable";
+  const char RES_SEARCH_FFN[] = "first_formula_name";
+  const char RES_SEARCH_FN[] = "formula_name";
+  const char RES_SEARCH_SUMMARY[] = "summary";
+
   // Search
   const char RES_SUMMARY_PREFIX[] = "summary_prefix";
   const char RES_SUMMARY_POSTFIX[] = "summary_postfix";
@@ -117,7 +129,26 @@ namespace aos{
   const char RES_SUMMARY_ELEMENT[] = "summary_element";
   const char RES_SUMMARY_FIELD[] = "summary_field";
 
+
+
+  // config stanza
+  const char QUERY_CONFIG_START[] = "start";
+  const char QUERY_CONFIG_HIT[] = "hit";
+  const char QUERY_CONFIG_FORMAT[] = "format";
+  const char QUERY_CONFIG_RERANK_SIZE[] = "rerank_size";
+  const char QUERY_CONFIG_FORMAT_JSON[] = "json";
+  const char QUERY_CONFIG_FORMAT_FULLJSON[] = "fulljson";
+  const char QUERY_CONFIG_FORMAT_XML[] = "xml";
+
   // query
+  const char QUERY_CONFIG_STANZA[] = "config";
+  const char QUERY_QUERY_STANZA[] = "query";
+  const char QUERY_FILTER_STANZA[] = "filter";
+  const char QUERY_SORT_STANZA[] = "sort";
+  const char QUERY_AGGREGATE_STANZA[] = "aggregate";
+  const char QUERY_DISTINCT_STANZA[] = "distinct";
+  const char QUERY_KVPAIRS_STANZA[] = "kvpairs";
+
   const char DEFAULT_INDEX_NAME[] = "defualt";
   const char UNION_TYPE_AND[] = "AND";
   const char UNION_TYPE_OR[] = "OR";
@@ -132,6 +163,18 @@ namespace aos{
   const char QUERY_AGGREGATE_FILTER[] = "agg_filter";
   const char QUERY_AGGREGATE_AST[] = "agg_sampler_threshold";
   const char QUERY_AGGREGATE_ASS[] = "agg_sampler_step";
+
+  // Distinct
+  const char QUERY_DIST_KEY[] = "dist_key";
+  const char QUERY_DIST_TIMES[] = "dist_times";
+  const char QUERY_DIST_COUNT[] = "dist_count";
+  const char QUERY_DIST_RESERVED[] = "reserved";
+  const char QUERY_DIST_UTH[] = "update_total_hit";
+  const char QUERY_DIST_DIST_FILTER[] = "dist_filter";
+  const char QUERY_DIST_GRADE[] = "grade";
+
+  // Kvpairs
+  const char QUERY_KVPAIRS[] = "";
 
 
 

@@ -100,6 +100,11 @@ namespace aos{
     return task->SyncStart();
   }
 
+  // Create ConfigStanza
+  ConfigStanza::Ptr AliOpenSearch::CreateConfigStanza(){
+    return ConfigStanza::Ptr(new ConfigStanza());
+  }
+
   QueryStanza::Ptr AliOpenSearch::CreateQueryStanza(
     const std::string &index_name, const std::string &key_word){
     return QueryStanza::Ptr(new QueryStanza(key_word, index_name));
@@ -113,6 +118,33 @@ namespace aos{
   SortStanza::Ptr AliOpenSearch::CreateSortStanza(
     const std::string &sort_express){
     return SortStanza::Ptr(new SortStanza(sort_express));
+  }
+
+  AggregateStanza::Ptr AliOpenSearch::CreateAggregateStanza(
+    const std::string &group_key){
+    return AggregateStanza::Ptr(new AggregateStanza(group_key));
+  }
+
+  DistinctStanza::Ptr AliOpenSearch::CreateDistinctStanza(
+    const std::string &dist_key){
+    return DistinctStanza::Ptr(new DistinctStanza(dist_key));
+  }
+
+  KvpairsStanza::Ptr AliOpenSearch::CreateKvpairsStanza(
+    const std::string &key, const std::string value){
+    return KvpairsStanza::Ptr(new KvpairsStanza(key, value));
+  }
+
+  Query::Ptr AliOpenSearch::CreateQuery(QueryStanza::Ptr query_stanza){
+    return Query::Ptr(new Query(query_stanza));
+  }
+
+  Summary::Ptr AliOpenSearch::CreateSummary(const std::string &summary_field,
+    const std::string &summary_element,
+    const std::string &summary_ellipsis,
+    int summary_snipped){
+    return Summary::Ptr(new Summary(summary_field, summary_element,
+      summary_ellipsis, summary_snipped));
   }
 
 }

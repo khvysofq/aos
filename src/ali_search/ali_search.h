@@ -52,6 +52,8 @@ namespace aos{
     ResValue::Ptr GetAppErrorLog(const std::string &app_name,
       int page, int page_size, SortMode sort_mode);
 
+    // Create ConfigStanza
+    ConfigStanza::Ptr CreateConfigStanza();
     // Create QueryStanza
     QueryStanza::Ptr CreateQueryStanza(const std::string &index_name,
       const std::string &key_word);
@@ -59,6 +61,22 @@ namespace aos{
     FilterStanza::Ptr CreateFilterStanza(const std::string &filter_express);
     // Create SortStanza
     SortStanza::Ptr CreateSortStanza(const std::string &sort_express);
+    // Create AggregateStanza
+    AggregateStanza::Ptr CreateAggregateStanza(const std::string &group_key);
+    // Create DistinctStanza
+    DistinctStanza::Ptr CreateDistinctStanza(const std::string &dist_key);
+    // Create KvpairsStanza
+    KvpairsStanza::Ptr CreateKvpairsStanza(
+      const std::string &key, const std::string value);
+    
+    // Create Query
+    Query::Ptr CreateQuery(QueryStanza::Ptr query_stanza);
+    // Create Summary
+    Summary::Ptr CreateSummary(
+      const std::string &summary_field,
+      const std::string &summary_element = "em",
+      const std::string &summary_ellipsis = "...",
+      int summary_snipped = 1);
   private:
     AliOpenSearch(AosGlobalContext::Ptr ag_context,
       const std::string &api_domain,
