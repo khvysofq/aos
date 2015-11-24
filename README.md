@@ -14,7 +14,7 @@
 安装`CMake 2.8`以上的版本，然后为了保证源代码的清洁，在源代码目录下新建一个build目录，使用下面的命令生成相应的工程。
 
 ``` 
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DWITH_GFLAGS=OFF
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DWITH_GFLAGS=OFF
 ```
 
 
@@ -39,6 +39,46 @@ cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -D
 - 下拉提示的请求结构与其它结构不同，需要修正一下。
 - 搜索相关的流程有，但是对规划化请求的封装还不完全。
 - 所有的功能都没有经过严格测试，后面需要数据支持。
+
+## 日志库
+
+`libali_opensearch`由于历史原因使用两种日志，前期使用了`easyloggingpp`库，后期使用了`glog`库，`libali_opensearch`提供了非常简单的方法来替换不同的日志库，我们并不会邦架用户，只是希望能够以更好的方式展示给用户有用的信息。
+在代码`src/base/baseinclude.h`中，有关于日志库的加载。
+
+```c++
+//#define EASY_LOGGING_CPP
+#ifdef EASY_LOGGING_CPP
+#include "easylogging++.h"
+#endif
+
+#define GOOGLE_GLOG_LIBRARY
+#ifdef GOOGLE_GLOG_LIBRARY
+#include "glog/logging.h"
+#endif
+// ....
+
+#ifdef GOOGLE_GLOG_LIBRARY || #ifdef EASY_LOGGING_CPP
+
+#define LOG_INFO LOG(INFO)
+#define LOG_WARNING LOG(WARNING)
+#define LOG_ERROR LOG(ERROR)
+
+#define DLOG_INFO DLOG(INFO)
+#define DLOG_WARNING DLOG(WARNING)
+#define DLOG_ERROR DLOG(WARNING)
+#else
+
+#define LOG_INFO std::cout
+#define LOG_WARNING std::cout
+#define LOG_ERROR std::cout
+
+#define DLOG_INFO std::cout
+#define DLOG_WARNING std::cout
+#define DLOG_ERROR std::cout
+#endif
+```
+
+如上面的代码所示，在库中所有的日志都以`LOG_INFO`、 `LOG_WARNING`、 `LOG_ERROR`、 `DLOG_INFO`、 `DLOG_WARNING`、 `DLOG_ERROR`，您可以将这三个宏替换成你想要的输出方式。
 
 ## license
 
