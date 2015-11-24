@@ -2,7 +2,10 @@
 #define ALI_OPENSEARCH_ALI_OPENSEARCH_REQ_VALUE_H_
 
 #include "base/baseinclude.h"
+#include "base/basedefines.h"
+#include "json/json.h"
 #include <set>
+#include <vector>
 
 namespace aos{
 
@@ -12,6 +15,71 @@ namespace aos{
     virtual bool IsValue() = 0;
   };
 
+  enum PushItemType{
+    ITEM_TYPE_ADD,
+    ITEM_TYPE_UPDATE,
+    ITEM_TYPE_DELETE
+  };
+
+  // ---------------------------------------------------------------------------
+
+  class PushItem :public noncopyable ,public BaseReqValue {
+  public:
+    typedef std::shared_ptr<PushItem> Ptr;
+    virtual const std::string Express();
+    Json::Value &JsonExpress();
+    virtual bool IsValue(){ return true; };
+
+    const std::string &type() const { return type_; }
+    const std::string &id() const { return id_; }
+    const Json::Value &fields() const { return fields_json_; }
+
+    // JSON
+    bool AddField(const std::string &key, Json::Value &value);
+    // TEXT
+    bool AddField(const std::string &key, const std::string &value);
+    // TEXT ARRAY
+    bool AddField(const std::string &key, std::vector<std::string> &value);
+    // INT
+    bool AddField(const std::string &key, int value);
+    // INT ARRAY
+    bool AddField(const std::string &key, std::vector<int> &value);
+    // FLOAT
+    bool AddField(const std::string &key, float value);
+    // FLOAT ARRAY
+    bool AddField(const std::string &key, std::vector<float> &value);
+
+  private:
+    friend class PushIndexDocTask;
+    PushItem(PushItemType type, const std::string &id);
+    friend class AliOpenSearch;
+
+    const std::string PushItemTypeToString(PushItemType type);
+  private:
+    std::string type_;
+    std::string id_;
+    Json::Value item_json_;
+    Json::Value fields_json_;
+  };
+
+  class PushForm : public noncopyable, public BaseReqValue{
+  public:
+    typedef std::shared_ptr<PushForm> Ptr;
+    virtual const std::string Express();
+    virtual bool IsValue();
+
+    void AddPushItem(PushItem::Ptr push_item){ 
+      push_items_.push_back(push_item); 
+    }
+    void ClearPushItems(){ push_items_.clear(); }
+    void RemovePushItems(PushItem::Ptr push_item);
+
+  private:
+    PushForm(PushItem::Ptr push_item);
+    friend class AliOpenSearch;
+  private:
+    std::vector<PushItem::Ptr> push_items_;
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // ---------------------------------------------------------------------------
@@ -356,11 +424,11 @@ namespace aos{
     std::string summary_postfix_;
   };
 
-  class SearchForm : public noncopyable, public BaseReqValue{
+  class SearchForm : public noncopyable{
   public:
     typedef std::shared_ptr<SearchForm> Ptr;
-    virtual const std::string Express();
-    virtual bool IsValue();
+    // virtual const std::string Express();
+    bool IsValue();
 
     // About Query
     Query::Ptr query() { return query_; }
@@ -405,6 +473,7 @@ namespace aos{
     Summary::Ptr summary(){ return summary_; }
     void ClearSummary() { summary_.reset(); }
     void set_summary(Summary::Ptr summary){ summary_ = summary; }
+
   private:
     SearchForm(Query::Ptr query, const std::string &app_name);
     void AddExpress(std::string &express,
@@ -412,6 +481,12 @@ namespace aos{
     const std::string SearchAppNameExpress();
     const std::string FetchFieldsExpress();
     const std::string QueryProtoExpress();
+
+    bool AddKeyValue(std::map<std::string, std::string> &kvs,
+      const std::string &key, const std::string &value);
+    bool UpdateKeyValue(std::map<std::string, std::string> &kvs);
+    friend class SearchTask;
+    friend class AliOpenSearch;
   private:
     Query::Ptr query_;
     std::set<std::string> index_app_names_;
@@ -422,6 +497,60 @@ namespace aos{
     std::string formula_name_;
     Summary::Ptr summary_;
     bool enable_summary_;
+  };
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  enum ScrollTimeType{
+    SCROLL_TIME_SECOND,
+    SCROLL_TIME_MINUTE,
+    SCROLL_TIME_HOUR,
+    SCROLL_TIME_DAY,
+    SCROLL_TIME_WEEK
+  };
+
+  class Scroll : public noncopyable{
+  public:
+
+    typedef std::shared_ptr<Scroll> Ptr;
+
+    // scroll time
+    uint32 scroll_time(){ return scroll_time_; }
+    ScrollTimeType time_type() { return time_type_; }
+    void set_scroll_time(uint32 scroll_time, ScrollTimeType time_type){
+      scroll_time_ = scroll_time;
+      time_type_ = time_type;
+    }
+
+    // Search type
+    const std::string &search_type(){ return search_type_; }
+    void set_search_type(const std::string &search_type){
+      search_type_ = search_type;
+    }
+
+    // Scroll id
+    const std::string &scroll_id() { return scroll_id_; }
+    void set_scroll_id(const std::string &scroll_id){
+      scroll_id_ = scroll_id;
+    }
+
+  private:
+    Scroll(uint32 scroll_time, ScrollTimeType time_type = SCROLL_TIME_MINUTE,
+      const std::string &search_type = SCROLL_TYPE_SCAN,
+      const std::string &scroll_id = "");
+
+    void HandleResultMessage(Json::Value &result_json);
+    bool UpdateKeyValue(std::map<std::string, std::string> &kvs);
+    const std::string GetScrollTime();
+    char ScrollTimeTypeToString(ScrollTimeType time_type);
+
+    friend class AliOpenSearch;
+    friend class SearchTask;
+  private:
+    uint32 scroll_time_;
+    ScrollTimeType time_type_;
+    std::string search_type_;
+    std::string scroll_id_;
   };
 
 }

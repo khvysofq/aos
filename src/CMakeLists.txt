@@ -43,10 +43,12 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	
@@ -80,10 +82,12 @@ SOURCE_GROUP(base FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
-	${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	)
@@ -109,6 +113,15 @@ SOURCE_GROUP(ali_search FILES
 #Step 4 : Add PROJECT define 
 MESSAGE(STATUS "Step 4 : Add code source")
 
+ if(WIN32)
+	 ADD_DEFINITIONS(
+		 -D_CRT_SECURE_NO_WARNINGS
+	 )
+ else()
+	 ADD_DEFINITIONS(
+		 -std=c++11
+	 )
+ endif()
 #########################################################################
 #Step 5 : Add executable or library target
 MESSAGE(STATUS "Step 5 : Add executable or library target")

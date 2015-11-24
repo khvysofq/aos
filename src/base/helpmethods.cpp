@@ -1,10 +1,12 @@
 #include "base/helpmethods.h"
 #include <time.h>
 #include <stdio.h>
-#include "timeutils.h"
+#include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "base/sha1.h"
 #include "base/base64.h"
+#include "timeutils.h"
 
 namespace aos{
 
@@ -20,7 +22,7 @@ namespace aos{
     int mic_seconds = 0;
     CurrentTmTime(&tt_tm, &mic_seconds);
 
-    sprintf_s(temp_buf, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+    sprintf(temp_buf, "%04d-%02d-%02dT%02d:%02d:%02dZ",
       tt_tm.tm_year + 1900,
       tt_tm.tm_mon + 1,
       tt_tm.tm_mday,
@@ -59,8 +61,8 @@ namespace aos{
     return res_str;
   }
 
-  uint64 HelpMethos::GetUnixTimeStamp(){
-    return TimeNanos() / 1000;
+  uint32 HelpMethos::GetUnixTimeStamp(){
+    return (uint32)(TimeNanos() / 1000);
   }
 
   static const char HEX[] = "0123456789ABCDEF";

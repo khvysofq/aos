@@ -41,7 +41,8 @@
 
 #include <algorithm>
 #include "base/common.h"
-#include "easylogging++.h"
+#include "base/baseinclude.h"
+//#include "easylogging++.h"
 
 //////////////////////////////////////////////////////////////////////
 // Assertions
@@ -73,7 +74,7 @@ void LogAssert(const char* function, const char* file, int line,
   if (custom_assert_logger_) {
     custom_assert_logger_(function, file, line, expression);
   } else {
-    LOG(ERROR) << file << "(" << line << ")" << ": ASSERT FAILED: "
+    LOG_ERROR << file << "(" << line << ")" << ": ASSERT FAILED: "
                   << expression << " @ " << function;
   }
 }

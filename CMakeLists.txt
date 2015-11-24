@@ -11,69 +11,60 @@ set_property(GLOBAL PROPERTY USE_FOLDERS On)
 SET(LIB_CURL ${PROJECT_SOURCE_DIR}/third_part/curl)
 SET(EASYLOGGINGPP ${PROJECT_SOURCE_DIR}/third_part/easyloggingpp)
 SET(JSON_CPP ${PROJECT_SOURCE_DIR}/third_part/jsoncpp)
+SET(GLOG ${PROJECT_SOURCE_DIR}/third_part/glog)
 
 ##1. INCLUDE_DIRECTORES
-if(UNIX)
-	SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
-	${LIB_CURL}/include
-	${LIB_CURL}/builds/vs2013/include/curl
-	${EASYLOGGINGPP}/src
-	${JSON_CPP}/include
-	${PROJECT_SOURCE_DIR}/src
-	)
-elseif(WIN32)
-	SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
+MESSAGE(STATUS "Step 1 :  Add include directores")
+SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
 	${LIB_CURL}/include
 	${PROJECT_BINARY_DIR}/third_part/curl/include/curl
+	${PROJECT_BINARY_DIR}/third_part/glog
 	${EASYLOGGINGPP}/src
 	${JSON_CPP}/include
+	${GLOG}/src
 	${PROJECT_SOURCE_DIR}/src
-	)
-endif()
+)
 
-MESSAGE(STATUS "       Add library path and name")
-IF(UNIX)
-	MESSAGE(STATUS "       LINUX")
+##2 LIBRARY PATH
+MESSAGE(STATUS "Step 2 :  Add library path and public link library")
+IF(WIN32)
+	MESSAGE(STATUS "       WINDOWS")
 	SET(ALIYUN_OPENSEARCH_LIBRARY_DIR
-		${JSON_CPP}/builds/vs2013/src/lib_json/Debug
+		${PROJECT_SOURCE_DIR}/lib/win
 		)
 	SET(ALIYUN_OPENSEARCH_LINK_LIB
-		-std=c++11
+		libcurl_imp.lib
+		jsoncpp.lib
+		winmm.lib
+		glog.lib
+		libali_opensearch.lib
+		)
+ELSE()
+	MESSAGE(STATUS "       LINUX")
+	SET(ALIYUN_OPENSEARCH_LIBRARY_DIR
+		${PROJECT_SOURCE_DIR}/lib/unix
+		)
+	SET(ALIYUN_OPENSEARCH_LINK_LIB
+		libali_opensearch.a
+		libjsoncpp.a
+		libcurl.so
+		libglog.a
 		pthread
 		rt
 		)
-ELSEIF(WIN32)
-	if(CMAKE_BUILD_TYPE MATCHES DEBUG)
-		MESSAGE(STATUS "       Debug Mode")
-		MESSAGE(STATUS "       MSVC12")
-		SET(ALIYUN_OPENSEARCH_LIBRARY_DIR
-			${PROJECT_SOURCE_DIR}/lib/win32/Debug
-			)
-		SET(ALIYUN_OPENSEARCH_LINK_LIB
-			libcurl_imp.lib
-			jsoncpp.lib
-			winmm.lib
-			)
-	elseif(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		MESSAGE(STATUS "       Release Mode")
-		MESSAGE(STATUS "       MSVC12")
-		SET(ALIYUN_OPENSEARCH_LIBRARY_DIR
-			${PROJECT_SOURCE_DIR}/lib/win32/Release
-			)
-		SET(ALIYUN_OPENSEARCH_LINK_LIB
-			libcurl_imp.lib
-			jsoncpp.lib
-			winmm.lib
-			)
-	endif()
 ENDIF()
 
-MESSAGE(STATUS "Step 4 : Add code source")
- if(UNIX)
-	 ADD_DEFINITIONS()
- elseif(WIN32)
+##3 add defines
+MESSAGE(STATUS "Step 3 :  Add More defines")
+ if(WIN32)
 	 ADD_DEFINITIONS(
 		 -D_CRT_SECURE_NO_WARNINGS
+		-DGOOGLE_GLOG_DLL_DECL=
+		-DGLOG_NO_ABBREVIATED_SEVERITIES
+	 )
+ else()
+	 ADD_DEFINITIONS(
+		-DGOOGLE_GLOG_DLL_DECL=
 	 )
  endif()
 
@@ -98,19 +89,19 @@ if(WIN32)
 	
 ################################################################
 	
-	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/bin/win32")
-	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/win32")
-	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/win32")
+	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/bin/win")
+	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/win")
+	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/win")
 	
-	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/bin/win32/Debug")
-	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/lib/win32/Debug")
-	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/lib/win32/Debug")
+	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/bin/win")
+	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/lib/win")
+	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG  "${PROJECT_SOURCE_DIR}/lib/win")
 		 
 	# With Release properties
-	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/bin/win32/Release")
-	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/lib/win32/Release")
-	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/lib/win32/Release")
-elseif(UNIX)
+	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/bin/win")
+	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/lib/win")
+	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE  "${PROJECT_SOURCE_DIR}/lib/win")
+else()
 	SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/bin/unix")
 	SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/unix")
 	SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  "${PROJECT_SOURCE_DIR}/lib/unix")
@@ -126,6 +117,11 @@ elseif(UNIX)
 ENDIF()
 ##########################################################
 ## Setp 3
+ADD_SUBDIRECTORY(third_part/curl)
+ADD_SUBDIRECTORY(third_part/jsoncpp)
+ADD_SUBDIRECTORY(third_part/glog)
+ADD_SUBDIRECTORY(src)
+
 ADD_SUBDIRECTORY(test/basictest)
 ADD_SUBDIRECTORY(test/klabeltest)
 ADD_SUBDIRECTORY(test/helptest)
@@ -136,8 +132,4 @@ ADD_SUBDIRECTORY(test/urlencodetest)
 ADD_SUBDIRECTORY(test/appmanagertest)
 ADD_SUBDIRECTORY(test/pushtest)
 ADD_SUBDIRECTORY(test/qeurystanzatest)
-
-
-ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(third_part/curl)
-ADD_SUBDIRECTORY(third_part/jsoncpp)
+ADD_SUBDIRECTORY(test/searchtest)

@@ -22,6 +22,7 @@ namespace aos{
       const std::string &access_key_id,
       const std::string &access_key_secret);
 
+    ////////////////////////////////////////////////////////////////////////////
     // Public Method
     //const char APP_TEMPLATE_BUILTIN_NEWS[] = "builtin_news";
     //const char APP_TEMPLATE_BUILTIN_NOVEL[] = "builtin_novel";
@@ -35,8 +36,8 @@ namespace aos{
     ResValue::Ptr DeleteApp(const std::string &app_name);
 
     //
-    PushIndexDocTask::Ptr BuildPushIndexDocTask(const std::string &app_name,
-      const std::string &table_name);
+    ResValue::Ptr PushIndexDoc(const std::string &app_name,
+      const std::string &table_name, PushForm::Ptr push_form);
 
     //
     ResValue::Ptr SuggestHit(const std::string &app_name,
@@ -52,6 +53,19 @@ namespace aos{
     ResValue::Ptr GetAppErrorLog(const std::string &app_name,
       int page, int page_size, SortMode sort_mode);
 
+    // Search
+    ResValue::Ptr Search(SearchForm::Ptr search_form);
+
+    // Scroll Search
+    ResValue::Ptr ScrollSearch(SearchForm::Ptr search_form, Scroll::Ptr scroll);
+    ////////////////////////////////////////////////////////////////////////////
+    // -------------------------------------------------------------------------
+    // About the push
+    PushItem::Ptr CreatePushItem(PushItemType type, const std::string &id);
+    PushForm::Ptr CreatePushForm(PushItem::Ptr push_item);
+
+    // -------------------------------------------------------------------------
+    // About the search
     // Create ConfigStanza
     ConfigStanza::Ptr CreateConfigStanza();
     // Create QueryStanza
@@ -60,7 +74,8 @@ namespace aos{
     // Create FilterStanza
     FilterStanza::Ptr CreateFilterStanza(const std::string &filter_express);
     // Create SortStanza
-    SortStanza::Ptr CreateSortStanza(const std::string &sort_express);
+    SortStanza::Ptr CreateSortStanza(
+      SortType type, const std::string &sort_express);
     // Create AggregateStanza
     AggregateStanza::Ptr CreateAggregateStanza(const std::string &group_key);
     // Create DistinctStanza
@@ -77,6 +92,10 @@ namespace aos{
       const std::string &summary_element = "em",
       const std::string &summary_ellipsis = "...",
       int summary_snipped = 1);
+    // Create SearchFrom
+    SearchForm::Ptr CreateSearchForm(
+      Query::Ptr query, const std::string &app_name);
+    // -------------------------------------------------------------------------
   private:
     AliOpenSearch(AosGlobalContext::Ptr ag_context,
       const std::string &api_domain,

@@ -56,13 +56,11 @@ namespace aos{
     return task->SyncStart();
   }
 
-  PushIndexDocTask::Ptr AliOpenSearch::BuildPushIndexDocTask(
-    const std::string &app_name,
-    const std::string &table_name){
-    return PushIndexDocTask::Ptr(new PushIndexDocTask(
-      ag_context_, ppm_,
-      app_name,table_name
-      ));
+  ResValue::Ptr AliOpenSearch::PushIndexDoc(const std::string &app_name,
+    const std::string &table_name, PushForm::Ptr push_form){
+    PushIndexDocTask::Ptr task(new PushIndexDocTask(
+      ag_context_, ppm_, app_name, table_name, push_form));
+    return task->SyncStart();
   }
 
   ResValue::Ptr AliOpenSearch::SuggestHit(const std::string &app_name,
@@ -100,6 +98,30 @@ namespace aos{
     return task->SyncStart();
   }
 
+  ResValue::Ptr AliOpenSearch::Search(SearchForm::Ptr search_form){
+    SearchTask::Ptr task(new SearchTask(ag_context_, ppm_, search_form));
+    return task->SyncStart();
+  }
+
+  ResValue::Ptr AliOpenSearch::ScrollSearch(
+    SearchForm::Ptr search_form, Scroll::Ptr scroll){
+    SearchTask::Ptr task(new SearchTask(
+      ag_context_, ppm_, search_form, scroll));
+    return task->SyncStart();
+  }
+
+  // ---------------------------------------------------------------------------
+
+  PushItem::Ptr AliOpenSearch::CreatePushItem(
+    PushItemType type, const std::string &id){
+    return PushItem::Ptr(new PushItem(type, id));
+  }
+  PushForm::Ptr AliOpenSearch::CreatePushForm(PushItem::Ptr push_item){
+    return PushForm::Ptr(new PushForm(push_item));
+  }
+
+  // ---------------------------------------------------------------------------
+
   // Create ConfigStanza
   ConfigStanza::Ptr AliOpenSearch::CreateConfigStanza(){
     return ConfigStanza::Ptr(new ConfigStanza());
@@ -116,8 +138,8 @@ namespace aos{
   }
 
   SortStanza::Ptr AliOpenSearch::CreateSortStanza(
-    const std::string &sort_express){
-    return SortStanza::Ptr(new SortStanza(sort_express));
+    SortType type, const std::string &sort_express){
+    return SortStanza::Ptr(new SortStanza(type, sort_express));
   }
 
   AggregateStanza::Ptr AliOpenSearch::CreateAggregateStanza(
@@ -145,6 +167,11 @@ namespace aos{
     int summary_snipped){
     return Summary::Ptr(new Summary(summary_field, summary_element,
       summary_ellipsis, summary_snipped));
+  }
+
+  SearchForm::Ptr AliOpenSearch::CreateSearchForm(
+    Query::Ptr query, const std::string &app_name){
+    return SearchForm::Ptr(new SearchForm(query, app_name));
   }
 
 }

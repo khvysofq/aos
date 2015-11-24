@@ -22,6 +22,14 @@ foreach(link_dir ${link_dirs})
   message(STATUS "    link directory='${link_dir}'")
 endforeach()
 
+ if(WIN32)
+	 ADD_DEFINITIONS(
+	 )
+ else()
+	 ADD_DEFINITIONS(
+		-std=c++11
+	 )
+ endif()
 #########################################################################
 #Step 3 : Add code source
 SET(SRC_LIST 

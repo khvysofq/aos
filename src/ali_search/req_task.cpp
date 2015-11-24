@@ -179,95 +179,29 @@ namespace aos{
   //////////////////////////////////////////////////////////////////////////////
 
   // ---------------------------------------------------------------------------
-  PushItem::PushItem(PushItemType type, const std::string &id) :id_(id){
-    item_json_[JSON_PUSH_CMD] = PushItemTypeToString(type);
-    item_json_[JSON_PUSH_TIMESTAMP] = HelpMethos::GetUnixTimeStamp();
-    fields_json_[JSON_PUSH_ITEM_ID] = id;
-  }
-
-  bool PushItem::AddField(const std::string &key, const std::string &value){
-    try{
-      fields_json_[key] = value;
-    }
-    catch (std::exception &e){
-      LOG_ERROR << e.what();
-      return false;
-    }
-    return true;
-  }
-
-  bool PushItem::AddField(const std::string &key, Json::Value &value){
-    try{
-      fields_json_[key] = value;
-    }
-    catch (std::exception &e){
-      LOG_ERROR << e.what();
-      return false;
-    }
-    return true;
-  }
-  Json::Value &PushItem::ToJson(){
-    item_json_[JSON_PUSH_FIELDS] = fields_json_;
-    return item_json_;
-  }
-
-  const std::string PushItem::PushItemTypeToString(PushItemType type){
-    switch (type)
-    {
-    case aos::ITEM_TYPE_ADD:
-      return "add";
-      break;
-    case aos::ITEM_TYPE_UPDATE:
-      return "update";
-      break;
-    case aos::ITEM_TYPE_DELETE:
-      return "delete";
-      break;
-    default:
-      break;
-    }
-    ASSERT(false);
-    return "update";
-  }
-  // ---------------------------------------------------------------------------
 
   PushIndexDocTask::PushIndexDocTask(
     AosGlobalContext::Ptr ag_context,
     PublicPartManager::Ptr ppmp,
     const std::string &app_name,
-    const std::string &table_name)
+    const std::string &table_name,
+    PushForm::Ptr push_form)
     :BaseReqTask(ag_context, ppmp, APP_PUSH_URL, HttpMethod::HTTP_POST),
     app_name_(app_name),
-    table_name_(table_name){
+    table_name_(table_name),
+    push_form_(push_form){
   }
 
   PushIndexDocTask::~PushIndexDocTask(){
 
   }
 
-  PushItem::Ptr PushIndexDocTask::AddItem(
-    PushItemType type, const std::string &id){
-    PushItem::Ptr item(new PushItem(type, id));
-    items_.push_back(item);
-    return item;
-  }
-
   bool PushIndexDocTask::BuildPostData(std::string &post_data){
-    if (items_.size() == 0){
-      LOG_ERROR << "The push data is null";
-      return false;
+    if (push_form_->IsValue()){
+      post_data.append(push_form_->Express());
+      return true;
     }
-    Json::Value items_json(Json::arrayValue);
-    for (std::size_t i = 0; i < items_.size(); i++){
-      items_json.append(items_[i]->ToJson());
-    }
-    Json::FastWriter fw;
-    post_data.append(JSON_PUSH_ITEMS);
-    post_data.push_back('=');
-    post_data.append(fw.write(items_json));
-    post_data = HelpMethos::URLEncode(post_data);
-    LOG_INFO << post_data;
-    return true;
+    return false;
   }
 
   void PushIndexDocTask::AddApiUrl(std::string &result){
@@ -395,9 +329,49 @@ namespace aos{
   SearchTask::SearchTask(AosGlobalContext::Ptr ag_context,
     PublicPartManager::Ptr ppmp,
     SearchForm::Ptr search_form)
-    :BaseReqTask(ag_context, ppmp, APP_SEARCH_URL, HttpMethod::HTTP_GET),
+    : BaseReqTask(ag_context, ppmp, APP_SEARCH_URL, HttpMethod::HTTP_GET),
     search_form_(search_form){
 
+  }
+
+  SearchTask::SearchTask(AosGlobalContext::Ptr ag_context,
+    PublicPartManager::Ptr ppmp,
+    SearchForm::Ptr search_form,
+    Scroll::Ptr scroll) 
+    : BaseReqTask(ag_context, ppmp, APP_SEARCH_URL, HttpMethod::HTTP_GET),
+    search_form_(search_form),
+    scroll_(scroll){
+
+  }
+
+  SearchTask::~SearchTask(){
+
+  }
+
+  ResValue::Ptr SearchTask::SyncStart(){
+    BaseReqTask::SyncStart();
+    if (scroll_){
+      scroll_->HandleResultMessage(res_value_->rep_json()[JSON_RESULT]);
+    }
+    return res_value_;
+  }
+
+  void SearchTask::AddApiUrl(std::string &result){
+    result.append(api_url_);
+  }
+
+  void SearchTask::AddPrivateKeyValues(){
+    std::map<std::string, std::string> kvs;
+    if (scroll_ && scroll_->UpdateKeyValue(kvs)){
+      // Do nothing
+    }
+    else{
+      search_form_->UpdateKeyValue(kvs);
+    }
+    for (std::map<std::string, std::string>::iterator iter = kvs.begin();
+      iter != kvs.end(); ++iter){
+      AddKeyValue(iter->first, iter->second);
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////

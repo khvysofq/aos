@@ -17,7 +17,7 @@ namespace aos{
     static const std::string GetSignatureNonce();
     static void Uint64ToString(uint64 n, std::string &str);
     static const std::string GetRandNumString(int size);
-    static uint64 GetUnixTimeStamp();
+    static uint32 GetUnixTimeStamp();
     static const std::string URLEncode(const std::string &str);
 
     static const std::string HttpMethodToStr(HttpMethod hm);

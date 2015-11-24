@@ -34,23 +34,38 @@ int main(int argv, char* argc[]){
       << grs_value->GetErrorMessage()[0].message;
   }
 
-  aos::PushIndexDocTask::Ptr push_task =
-    aosp->BuildPushIndexDocTask("HELLO", "main");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "1");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "2");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "3");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "4");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "5");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "6");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "7");
-  push_task->AddItem(aos::PushItemType::ITEM_TYPE_DELETE, "8");
-  aos::ResValue::Ptr pid_value = push_task->SyncStart();
-  if (grs_value->IsSucceed()){
+  aos::PushItem::Ptr push_item = aosp->CreatePushItem(
+    aos::PushItemType::ITEM_TYPE_ADD, "1");
+  push_item->AddField("type_id", "12");
+  push_item->AddField("cat_id", "13");
+  push_item->AddField("title", "test");
+  push_item->AddField("body", "This is a test, about something");
+  push_item->AddField("url", "www.baidu.com");
+
+
+  aos::PushForm::Ptr push_form = aosp->CreatePushForm(push_item);
+
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "2"));
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "3"));
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "4"));
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "5"));
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "6"));
+  //push_form->AddPushItem(
+  //  aosp->CreatePushItem(aos::PushItemType::ITEM_TYPE_DELETE, "7"));
+
+  aos::ResValue::Ptr res = aosp->PushIndexDoc("HELLO", "main", push_form);
+
+  if (res->IsSucceed()){
     LOG_INFO << "Delete the HELLO main table succeed";
   }
   else{
     LOG_ERROR << "Delete the HELLO main table error"
-      << grs_value->GetErrorMessage()[0].message;
+      << res->GetErrorMessage()[0].message;
   }
 
 

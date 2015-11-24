@@ -3,7 +3,7 @@
 #include "ali_search/aoscontext.h"
 //#include "easylogging++.h"
 
-INITIALIZE_EASYLOGGINGPP
+//INITIALIZE_EASYLOGGINGPP
 
 namespace aos{
 
@@ -33,21 +33,12 @@ namespace aos{
   }
 
   bool AosGlobalContext::InitLogginpp(){
-    //el::Configurations defaultConf;
-    //defaultConf.setToDefault();
-    //// Values are always std::string
-    //defaultConf.set(el::Level::Global,
-    //  el::ConfigurationType::Format, "[%level %datetime %fbase %line] %msg");
-    //defaultConf.set(el::Level::Global,
-    //  el::ConfigurationType::ToFile, "./log.txt");
-    //// default logger uses default configurations
-    //el::Loggers::reconfigureLogger("default", defaultConf);
-    // Load configuration from file
-    el::Configurations conf("./loggin.conf");
-    // Reconfigure single logger
-    el::Loggers::reconfigureLogger("default", conf);
-    // Actually reconfigure all loggers instead
-    el::Loggers::reconfigureAllLoggers(conf);
+    //// Load configuration from file
+    //el::Configurations conf("./loggin.conf");
+    //// Reconfigure single logger
+    //el::Loggers::reconfigureLogger("default", conf);
+    //// Actually reconfigure all loggers instead
+    //el::Loggers::reconfigureAllLoggers(conf);
     return true;
   }
 

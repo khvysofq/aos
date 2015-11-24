@@ -48,6 +48,7 @@
 
 #include <cstring>
 #include <string>
+#include <string.h>
 
 #include "base/basictypes.h"
 

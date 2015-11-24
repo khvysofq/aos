@@ -176,6 +176,12 @@ namespace aos{
   // Kvpairs
   const char QUERY_KVPAIRS[] = "";
 
+  // Scroll Search
+  const char RES_SCROLL[] = "scroll";
+  const char RES_SCROLL_SEARCH_TYPE[] = "search_type";
+  const char RES_SCROLL_ID[] = "scroll_id";
+  const char SCROLL_TYPE_SCAN[] = "scan";
+
 
 
 #define AOS_ERROR_MAP_DEF(NAME, NCODE, DESCRIBE)\

@@ -1,9 +1,171 @@
 #include "ali_search/req_value.h"
 #include "base/basedefines.h"
 #include "base/common.h"
+#include "base/helpmethods.h"
 
 
 namespace aos{
+
+  // ---------------------------------------------------------------------------
+  PushItem::PushItem(PushItemType type, const std::string &id) :id_(id){
+    item_json_[JSON_PUSH_CMD] = PushItemTypeToString(type);
+    item_json_[JSON_PUSH_TIMESTAMP] = HelpMethos::GetUnixTimeStamp();
+    fields_json_[JSON_PUSH_ITEM_ID] = id;
+  }
+
+  Json::Value &PushItem::JsonExpress(){
+    item_json_[JSON_PUSH_FIELDS] = fields_json_;
+    return item_json_;
+  }
+
+  const std::string PushItem::Express(){
+    return JsonExpress().toStyledString();
+  }
+
+  bool PushItem::AddField(const std::string &key, Json::Value &value){
+    try{
+      fields_json_[key] = value;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+
+  // JSON
+  bool PushItem::AddField(const std::string &key, const std::string &value){
+    try{
+      fields_json_[key] = value;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+
+  // TEXT ARRAY
+  bool PushItem::AddField(const std::string &key,
+    std::vector<std::string> &value){
+    try{
+      Json::Value json_array;
+      for (std::size_t i = 0; i < value.size(); i++){
+        json_array.append(value[i]);
+      }
+      fields_json_[key] = json_array;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+  // INT
+  bool PushItem::AddField(const std::string &key, int value){
+    try{
+      fields_json_[key] = value;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+  // INT ARRAY
+  bool PushItem::AddField(const std::string &key, std::vector<int> &value){
+    try{
+      Json::Value json_array;
+      for (std::size_t i = 0; i < value.size(); i++){
+        json_array.append(value[i]);
+      }
+      fields_json_[key] = json_array;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+  // FLOAT
+  bool PushItem::AddField(const std::string &key, float value){
+    try{
+      fields_json_[key] = value;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+  // FLOAT ARRAY
+  bool PushItem::AddField(const std::string &key, std::vector<float> &value){
+    try{
+      Json::Value json_array;
+      for (std::size_t i = 0; i < value.size(); i++){
+        json_array.append(value[i]);
+      }
+      fields_json_[key] = json_array;
+    }
+    catch (std::exception &e){
+      LOG_ERROR << e.what();
+      return false;
+    }
+    return true;
+  }
+  const std::string PushItem::PushItemTypeToString(PushItemType type){
+    switch (type)
+    {
+    case aos::ITEM_TYPE_ADD:
+      return "add";
+      break;
+    case aos::ITEM_TYPE_UPDATE:
+      return "update";
+      break;
+    case aos::ITEM_TYPE_DELETE:
+      return "delete";
+      break;
+    default:
+      break;
+    }
+    ASSERT(false);
+    return "update";
+  }
+  // ---------------------------------------------------------------------------
+
+  PushForm::PushForm(PushItem::Ptr push_item){
+    AddPushItem(push_item);
+  }
+
+  bool PushForm::IsValue(){
+    if (push_items_.size() > 0){
+      return true;
+    }
+    return false;
+  }
+
+  const std::string PushForm::Express(){
+    Json::Value express(Json::arrayValue);
+    Json::FastWriter fw;
+    if (!IsValue()){
+      return fw.write(express);
+    }
+    for (std::size_t i = 0; i < push_items_.size(); i++){
+      if (push_items_[i]->IsValue()){
+        express.append(push_items_[i]->JsonExpress());
+      }
+    }
+    return fw.write(express);
+  }
+
+  void PushForm::RemovePushItems(PushItem::Ptr push_item){
+    for (std::size_t i = 0; i < push_items_.size(); i++){
+      if (push_items_[i] == push_item){
+        push_items_.erase(push_items_.begin() + i);
+        return;
+      }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   ConfigStanza::ConfigStanza()
@@ -384,8 +546,8 @@ namespace aos{
     }
     return distinct_express;
   }
-  //----------------------------------------------------------------------------
 
+  //----------------------------------------------------------------------------
   KvpairsStanza::KvpairsStanza(const std::string &key, const std::string value){
     AddKvpair(key, value);
   }
@@ -618,51 +780,96 @@ namespace aos{
     return false;
   }
 
-  const std::string SearchForm::Express(){
-    std::string express;
+  //const std::string SearchForm::Express(){
+  //  std::string express;
+  //  // Start setting the key values to null
+  //  key_values_.clear();
+
+  //  if (!IsValue()){
+  //    return express;
+  //  }
+  //  // 1. Add query
+  //  AddExpress(express, RES_SEARCH_QUERY, query_->Express());
+  //  // 2. Add index name
+  //  express.append("&");
+  //  AddExpress(express, RES_SEARCH_INDEX_NAME, SearchAppNameExpress());
+  //  // 3. Add fetch fields
+  //  if (fetch_fields_.size() != 0){
+  //    express.append("&");
+  //    AddExpress(express, RES_SEARCH_FETCH_FIELDS, FetchFieldsExpress());
+  //  }
+  //  // 4. Add qp
+  //  if (query_protos_.size() != 0){
+  //    express.append("&");
+  //    AddExpress(express, RES_SEAERCH_QP, QueryProtoExpress());
+  //  }
+  //  // 5. Add disable
+  //  // The document is not clear
+  //  // 6. Add first_formula_name
+  //  if (!first_formula_name_.empty()){
+  //    express.append("&");
+  //    AddExpress(express, RES_SEARCH_FFN, first_formula_name_);
+  //  }
+  //  // 7. Add formula_name
+  //  if (!formula_name_.empty()){
+  //    express.append("&");
+  //    AddExpress(express, RES_SEARCH_FN, formula_name_);
+  //  }
+  //  // 8. Add summary
+  //  if (summary_ && summary_->IsValue()){
+  //    express.append("&");
+  //    AddExpress(express, RES_SEARCH_SUMMARY, summary_->Express());
+  //  }
+  //  return express;
+  //}
+
+  //void SearchForm::AddExpress(std::string &express,
+  //  const std::string &key, const std::string value){
+  //  express.append(key);
+  //  express.push_back('=');
+  //  express.append(HelpMethos::URLEncode(value));
+  //}
+
+  bool SearchForm::AddKeyValue(std::map<std::string, std::string> &kvs,
+    const std::string &key, const std::string &value){
+    KVSInsertResult res = kvs.insert(std::make_pair(key, value));
+    if (res.second == false){
+      LOG_ERROR << "Add key value error, maybe the same key aready exsits!";
+    }
+    return res.second;
+  }
+
+  bool SearchForm::UpdateKeyValue(std::map<std::string, std::string> &kvs){
     if (!IsValue()){
-      return express;
+      return false;
     }
     // 1. Add query
-    AddExpress(express, RES_SEARCH_QUERY, query_->Express());
+    AddKeyValue(kvs, RES_SEARCH_QUERY, query_->Express());
     // 2. Add index name
-    express.append("&&");
-    AddExpress(express, RES_SEARCH_INDEX_NAME, SearchAppNameExpress());
+    AddKeyValue(kvs, RES_SEARCH_INDEX_NAME, SearchAppNameExpress());
     // 3. Add fetch fields
     if (fetch_fields_.size() != 0){
-      express.append("&&");
-      AddExpress(express, RES_SEARCH_FETCH_FIELDS, FetchFieldsExpress());
+      AddKeyValue(kvs, RES_SEARCH_FETCH_FIELDS, FetchFieldsExpress());
     }
     // 4. Add qp
-    if (query_protos_.size() == 0){
-      express.append("&&");
-      AddExpress(express, RES_SEAERCH_QP, QueryProtoExpress());
+    if (query_protos_.size() != 0){
+      AddKeyValue(kvs, RES_SEAERCH_QP, QueryProtoExpress());
     }
     // 5. Add disable
     // The document is not clear
     // 6. Add first_formula_name
     if (!first_formula_name_.empty()){
-      express.append("&&");
-      AddExpress(express, RES_SEARCH_FFN, first_formula_name_);
+      AddKeyValue(kvs, RES_SEARCH_FFN, first_formula_name_);
     }
     // 7. Add formula_name
     if (!formula_name_.empty()){
-      express.append("&&");
-      AddExpress(express, RES_SEARCH_FN, formula_name_);
+      AddKeyValue(kvs, RES_SEARCH_FN, formula_name_);
     }
     // 8. Add summary
     if (summary_ && summary_->IsValue()){
-      express.append("&&");
-      AddExpress(express, RES_SEARCH_SUMMARY, summary_->Express());
+      AddKeyValue(kvs, RES_SEARCH_SUMMARY, summary_->Express());
     }
-    return express;
-  }
-
-  void SearchForm::AddExpress(std::string &express,
-    const std::string &key, const std::string value){
-    express.append(RES_SEARCH_QUERY);
-    express.push_back('=');
-    express.append(query_->Express());
+    return true;
   }
 
   // Search app name
@@ -747,6 +954,64 @@ namespace aos{
       }
     }
     return express;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // 
+  Scroll::Scroll(uint32 scroll_time, ScrollTimeType time_type,
+    const std::string &search_type, const std::string &scroll_id)
+    :scroll_time_(scroll_time),
+    time_type_(time_type),
+    search_type_(search_type),
+    scroll_id_(scroll_id){
+
+  }
+
+  void Scroll::HandleResultMessage(Json::Value &result_json){
+    if (!result_json.isNull() && !result_json[RES_SCROLL_ID].isNull()){
+      scroll_id_ = result_json[RES_SCROLL_ID].asString();
+    }
+  }
+
+  bool Scroll::UpdateKeyValue(std::map<std::string, std::string> &kvs){
+    std::string scroll_time_str;
+    scroll_time_str.append(std::to_string(scroll_time_));
+    scroll_time_str.push_back(ScrollTimeTypeToString(time_type_));
+    kvs.insert(std::make_pair(RES_SCROLL, scroll_time_str));
+    if (scroll_id_.empty()){
+      kvs.insert(std::make_pair(RES_SCROLL_SEARCH_TYPE, SCROLL_TYPE_SCAN));
+      return false;
+    }
+    else{
+      kvs.insert(std::make_pair(RES_SCROLL_ID, scroll_id_));
+      return true;
+    }
+    return true;
+  }
+
+  char Scroll::ScrollTimeTypeToString(ScrollTimeType time_type){
+    switch (time_type)
+    {
+    case aos::SCROLL_TIME_SECOND:
+      return 's';
+      break;
+    case aos::SCROLL_TIME_MINUTE:
+      return 'm';
+      break;
+    case aos::SCROLL_TIME_HOUR:
+      return 'h';
+      break;
+    case aos::SCROLL_TIME_DAY:
+      return 'd';
+      break;
+    case aos::SCROLL_TIME_WEEK:
+      return 'w';
+      break;
+    default:
+      break;
+    }
+    ASSERT(false);
+    return 'm';
   }
 
 }

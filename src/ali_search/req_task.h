@@ -114,50 +114,23 @@ namespace aos{
   };
 
   //////////////////////////////////////////////////////////////////////////////
-  enum PushItemType{
-    ITEM_TYPE_ADD,
-    ITEM_TYPE_UPDATE,
-    ITEM_TYPE_DELETE
-  };
-
-  // ---------------------------------------------------------------------------
-  class PushItem :public noncopyable{
-  public:
-    typedef std::shared_ptr<PushItem> Ptr;
-
-    const std::string &type() const { return type_; }
-    const std::string &id() const { return id_; }
-    const Json::Value &fields() const { return fields_json_; }
-
-    bool AddField(const std::string &key, const std::string &value);
-    bool AddField(const std::string &key, Json::Value &value);
-
-  private:
-    friend class PushIndexDocTask;
-    PushItem(PushItemType type, const std::string &id);
-    const std::string PushItemTypeToString(PushItemType type);
-
-    Json::Value &ToJson();
-  private:
-    std::string type_;
-    std::string id_;
-    Json::Value item_json_;
-    Json::Value fields_json_;
-  };
-  // ---------------------------------------------------------------------------
 
   class PushIndexDocTask : public BaseReqTask, public noncopyable{
   public:
     typedef std::shared_ptr<PushIndexDocTask> Ptr;
     virtual ~PushIndexDocTask();
 
-    PushItem::Ptr AddItem(PushItemType type, const std::string &id);
+    PushForm::Ptr push_form() { return push_form_; }
+    void set_push_form(PushForm::Ptr push_form){
+      push_form_ = push_form;
+    }
 
   private:
     explicit PushIndexDocTask(AosGlobalContext::Ptr ag_context,
       PublicPartManager::Ptr ppmp,
       const std::string &app_name, 
-      const std::string &table_name);
+      const std::string &table_name,
+      PushForm::Ptr push_form);
 
     virtual bool BuildPostData(std::string &post_data);
 
@@ -171,7 +144,7 @@ namespace aos{
   private:
     std::string app_name_;
     std::string table_name_;
-    std::vector<PushItem::Ptr> items_;
+    PushForm::Ptr push_form_;
   };
 
   //////////////////////////////////////////////////////////////////////////////
@@ -255,14 +228,30 @@ namespace aos{
   
   class SearchTask : public BaseReqTask, public noncopyable{
   public:
+    typedef std::shared_ptr<SearchTask> Ptr;
+    virtual ~SearchTask();
 
+    virtual ResValue::Ptr SyncStart();
+
+    virtual void AddApiUrl(std::string &result);
+    virtual void AddPrivateKeyValues(); 
+    virtual ResValue *GetResBuffer(){
+      return res_value_.get();
+    }
   private:
     SearchTask(AosGlobalContext::Ptr ag_context,
       PublicPartManager::Ptr ppmp, 
       SearchForm::Ptr search_form);
+
+    SearchTask(AosGlobalContext::Ptr ag_context,
+      PublicPartManager::Ptr ppmp,
+      SearchForm::Ptr search_form,
+      Scroll::Ptr scroll);
+
     friend class AliOpenSearch;
   private:
     SearchForm::Ptr search_form_;
+    Scroll::Ptr scroll_;
   };
 }
 

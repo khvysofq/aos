@@ -5,7 +5,7 @@
 #include <memory.h>
 #include "base/base64.h"
 
-INITIALIZE_EASYLOGGINGPP
+//INITIALIZE_EASYLOGGINGPP
 
 const std::string SIGN_STR = "GET&%2F&AccessKeyId%3Dtestid%26SignatureMethod"
 "%3DHMAC-SHA1%26SignatureNonce%3D14053016951271226%26Si"

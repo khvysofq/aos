@@ -31,6 +31,10 @@
 #define ALI_OPENSEARCH_BASE_TIMEUTILS_H_
 
 #include <time.h>
+#include "base/common.h"
+#ifndef WIN32
+#include <sys/time.h>
+#endif
 
 #include "base/basictypes.h"
 

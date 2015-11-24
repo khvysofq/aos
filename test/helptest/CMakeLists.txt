@@ -21,7 +21,14 @@ get_property(link_dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY LINK_DIREC
 foreach(link_dir ${link_dirs})
   message(STATUS "    link directory='${link_dir}'")
 endforeach()
-
+ if(WIN32)
+	 ADD_DEFINITIONS(
+	 )
+ else()
+	 ADD_DEFINITIONS(
+		-std=c++11
+	 )
+ endif()
 #########################################################################
 #Step 3 : Add code source
 SET(SRC_LIST 
@@ -42,14 +49,14 @@ ADD_executable(${BUILD_PROJECT_NAME} ${SRC_LIST})
 #Step 6 : link with other library
 MESSAGE(STATUS "Step 6 : link with other library")
 
-IF(UNIX)
-	TARGET_LINK_LIBRARIES(${BUILD_PROJECT_NAME} 
-		${ALIYUN_OPENSEARCH_LINK_LIB}
-	)
-ELSEIF(WIN32)
+
+IF(WIN32)
 	TARGET_LINK_LIBRARIES(${BUILD_PROJECT_NAME} 
 		${ALIYUN_OPENSEARCH_LINK_LIB}
 		Ws2_32.lib
-		libali_opensearch.lib
+	)
+ELSE()
+	TARGET_LINK_LIBRARIES(${BUILD_PROJECT_NAME} 
+		${ALIYUN_OPENSEARCH_LINK_LIB}
 	)
 ENDIF()
