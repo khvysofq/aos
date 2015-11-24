@@ -45,3 +45,4 @@ cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -D
 - jsoncpp lisenced unser a [MIT](https://github.com/open-source-parsers/jsoncpp "MIT")
 - curl licensed under a [MIT/X](http://curl.haxx.se/docs/copyright.html "MIT/X") 
 - easyloggingpp licensed under a [MIT](https://github.com/easylogging/easyloggingpp "MIT")
+- glog license under a [Apache 2](https://developers.google.com/open-source/devplat "Apache 2")

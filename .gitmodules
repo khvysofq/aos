@@ -7,3 +7,6 @@
 [submodule "third_part/curl"]
 	path = third_part/curl
 	url = https://github.com/bagder/curl.git
+[submodule "third_part/glog"]
+	path = third_part/glog
+	url = https://github.com/khvysofq/glog.git
