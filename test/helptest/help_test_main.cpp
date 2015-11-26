@@ -1,6 +1,7 @@
 #include "ali_search/ali_search.h"
 #include "base/basedefines.h"
 #include "base/helpmethods.h"
+#include "base/logging.h"
 #ifdef WIN32
 #pragma execution_character_set("utf-8")
 #endif

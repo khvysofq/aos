@@ -1,5 +1,6 @@
 ﻿#include "ali_search/ali_search.h"
 #include "ali_search/req_task.h"
+#include "base/logging.h"
 
 //INITIALIZE_EASYLOGGINGPP
 

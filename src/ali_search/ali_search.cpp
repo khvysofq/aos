@@ -1,4 +1,5 @@
 #include "ali_search/ali_search.h"
+#include "base/logging.h"
 #include "curl/curl.h"
 
 namespace aos{
@@ -143,8 +144,8 @@ namespace aos{
   }
 
   AggregateStanza::Ptr AliOpenSearch::CreateAggregateStanza(
-    const std::string &group_key){
-    return AggregateStanza::Ptr(new AggregateStanza(group_key));
+    const std::string &group_key, const std::string &agg_fun){
+    return AggregateStanza::Ptr(new AggregateStanza(group_key, agg_fun));
   }
 
   DistinctStanza::Ptr AliOpenSearch::CreateDistinctStanza(
@@ -172,6 +173,14 @@ namespace aos{
   SearchForm::Ptr AliOpenSearch::CreateSearchForm(
     Query::Ptr query, const std::string &app_name){
     return SearchForm::Ptr(new SearchForm(query, app_name));
+  }
+
+  Scroll::Ptr AliOpenSearch::CreateScroll(uint32 scroll_time,
+    ScrollTimeType time_type,
+    const std::string &search_type,
+    const std::string &scroll_id){
+    return Scroll::Ptr(new Scroll(
+      scroll_time, time_type, search_type, scroll_id));
   }
 
 }

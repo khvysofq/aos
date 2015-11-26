@@ -6,6 +6,10 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(aliyun_opensearch)
 set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
+SET(PROJECT_SET_NAME_TEST "test")
+SET(PROJECT_SET_NAME_LIB "lib")
+SET(PROJECT_SET_NAME_THIRD_PART "third_part")
+
 ##########################################################
 ## Step 1 
 SET(LIB_CURL ${PROJECT_SOURCE_DIR}/third_part/curl)
@@ -131,5 +135,16 @@ ADD_SUBDIRECTORY(test/base64test)
 ADD_SUBDIRECTORY(test/urlencodetest)
 ADD_SUBDIRECTORY(test/appmanagertest)
 ADD_SUBDIRECTORY(test/pushtest)
+ADD_SUBDIRECTORY(test/searchtest)
+ADD_SUBDIRECTORY(test/reindextest)
+ADD_SUBDIRECTORY(test/suggesttest)
+ADD_SUBDIRECTORY(test/geterrorlogtest)
+
+ADD_SUBDIRECTORY(test/configstanzatest)
 ADD_SUBDIRECTORY(test/qeurystanzatest)
-#ADD_SUBDIRECTORY(test/searchtest)
+ADD_SUBDIRECTORY(test/filterstanzatest)
+ADD_SUBDIRECTORY(test/sortstanzatest)
+ADD_SUBDIRECTORY(test/aggstanzatest)
+ADD_SUBDIRECTORY(test/distinctstanzatest)
+ADD_SUBDIRECTORY(test/kvpairstanzatest)
+

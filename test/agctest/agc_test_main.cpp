@@ -1,5 +1,6 @@
 
 #include "ali_search/aoscontext.h"
+#include "base/logging.h"
 
 
 int main(int argv, char* argc[]){

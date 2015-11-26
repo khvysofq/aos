@@ -1,12 +1,8 @@
 #ifndef ALI_OPENSEARCH_AL_OPENSEARCH_AL_OPENSEARCH_H_
 #define ALI_OPENSEARCH_AL_OPENSEARCH_AL_OPENSEARCH_H_
 
-#include "curl/curl.h"
-#include "base/baseinclude.h"
-#include "base/basedefines.h"
 #include "ali_search/public_part.h"
 #include "ali_search/aoscontext.h"
-#include "ali_search/res_value.h"
 #include "ali_search/req_task.h"
 
 namespace aos{
@@ -35,13 +31,15 @@ namespace aos{
     //
     ResValue::Ptr DeleteApp(const std::string &app_name);
 
-    //
+    // Push a form to the server
     ResValue::Ptr PushIndexDoc(const std::string &app_name,
-      const std::string &table_name, PushForm::Ptr push_form);
+      const std::string &table_name, 
+      PushForm::Ptr push_form);
 
     //
     ResValue::Ptr SuggestHit(const std::string &app_name,
-      const std::string &query, const std::string &suggest_name,
+      const std::string &query, 
+      const std::string &suggest_name,
       int hit_count = 10);
 
     //
@@ -58,43 +56,61 @@ namespace aos{
 
     // Scroll Search
     ResValue::Ptr ScrollSearch(SearchForm::Ptr search_form, Scroll::Ptr scroll);
+
     ////////////////////////////////////////////////////////////////////////////
     // -------------------------------------------------------------------------
     // About the push
+    // Create a push Item
     PushItem::Ptr CreatePushItem(PushItemType type, const std::string &id);
+    // Create a push Form
     PushForm::Ptr CreatePushForm(PushItem::Ptr push_item);
 
     // -------------------------------------------------------------------------
     // About the search
     // Create ConfigStanza
     ConfigStanza::Ptr CreateConfigStanza();
+
     // Create QueryStanza
     QueryStanza::Ptr CreateQueryStanza(const std::string &index_name,
       const std::string &key_word);
+
     // Create FilterStanza
     FilterStanza::Ptr CreateFilterStanza(const std::string &filter_express);
+
     // Create SortStanza
     SortStanza::Ptr CreateSortStanza(
       SortType type, const std::string &sort_express);
+
     // Create AggregateStanza
-    AggregateStanza::Ptr CreateAggregateStanza(const std::string &group_key);
+    AggregateStanza::Ptr CreateAggregateStanza(
+      const std::string &group_key, const std::string &agg_fun);
+
     // Create DistinctStanza
     DistinctStanza::Ptr CreateDistinctStanza(const std::string &dist_key);
+
     // Create KvpairsStanza
     KvpairsStanza::Ptr CreateKvpairsStanza(
       const std::string &key, const std::string value);
     
     // Create Query
     Query::Ptr CreateQuery(QueryStanza::Ptr query_stanza);
+
     // Create Summary
     Summary::Ptr CreateSummary(
       const std::string &summary_field,
       const std::string &summary_element = "em",
       const std::string &summary_ellipsis = "...",
       int summary_snipped = 1);
+
     // Create SearchFrom
     SearchForm::Ptr CreateSearchForm(
       Query::Ptr query, const std::string &app_name);
+
+    // Create Scroll
+    Scroll::Ptr CreateScroll(uint32 scroll_time, 
+      ScrollTimeType time_type = SCROLL_TIME_MINUTE,
+      const std::string &search_type = SCROLL_TYPE_SCAN,
+      const std::string &scroll_id = "");
     // -------------------------------------------------------------------------
   private:
     AliOpenSearch(AosGlobalContext::Ptr ag_context,

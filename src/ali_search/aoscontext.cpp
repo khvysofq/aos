@@ -1,6 +1,7 @@
 
 #include "curl/curl.h"
 #include "ali_search/aoscontext.h"
+#include "base/logging.h"
 //#include "easylogging++.h"
 
 //INITIALIZE_EASYLOGGINGPP

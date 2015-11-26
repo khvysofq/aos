@@ -2,6 +2,8 @@
 #include "base/basedefines.h"
 #include "base/common.h"
 #include "base/helpmethods.h"
+#include "base/logging.h"
+#include "json/json.h"
 
 
 namespace aos{
@@ -369,12 +371,14 @@ namespace aos{
 
 
   //----------------------------------------------------------------------------
-  AggregateStanza::AggregateStanza(const std::string &group_key)
+  AggregateStanza::AggregateStanza(const std::string &group_key,
+    const std::string &agg_fun)
     :group_key_(group_key),
     max_group_(0),
     agg_sampler_threshold_(0),
     agg_sampler_step_(0){
-    ASSERT(group_key.empty());
+    ASSERT(!group_key.empty());
+    agg_funcs_.insert(agg_fun);
   }
 
   bool AggregateStanza::IsValue(){
@@ -474,7 +478,7 @@ namespace aos{
     dist_count_(1),
     reserved_(true),
     update_total_hit_(false){
-    ASSERT(dist_key.empty());
+    ASSERT(!dist_key.empty());
   }
 
   bool DistinctStanza::IsValue(){
@@ -774,7 +778,7 @@ namespace aos{
   }
 
   bool SearchForm::IsValue(){
-    if (query_ && query_->IsValue() && index_app_names_.size() >= 0){
+    if (query_ && query_->IsValue() && index_app_names_.size() > 0){
       return true;
     }
     return false;

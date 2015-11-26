@@ -1,5 +1,6 @@
 #include "ali_search/ali_search.h"
 #include "base/basedefines.h"
+#include "base/logging.h"
 //#include "easylogging++.h"
 
 //INITIALIZE_EASYLOGGINGPP

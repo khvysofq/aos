@@ -2,6 +2,7 @@
 #include "base/basedefines.h"
 #include "json/json.h"
 #include "base/common.h"
+#include "base/logging.h"
 
 namespace aos{
 
@@ -253,7 +254,7 @@ namespace aos{
     const std::string &app_name,
     const std::string &operate,
     const std::string &table_name)
-    :BaseReqTask(ag_context, ppmp, APP_SUGGEST_URL, HttpMethod::HTTP_GET),
+    :BaseReqTask(ag_context, ppmp, APP_REINDEX_URL, HttpMethod::HTTP_GET),
     app_name_(app_name),
     operate_(operate),
     table_name_(table_name){
@@ -274,7 +275,6 @@ namespace aos{
     if (!operate_.empty()){
       AddKeyValue(RES_REINDEX_OPERATE, operate_);
       AddKeyValue(RES_REINDEX_TABLE_NAME, table_name_);
-
     }
   }
 
@@ -284,7 +284,7 @@ namespace aos{
     PublicPartManager::Ptr ppmp,
     const std::string &app_name,
     int page, int page_size, SortMode sort_mode)
-    :BaseReqTask(ag_context, ppmp, APP_SUGGEST_URL, HttpMethod::HTTP_GET),
+    :BaseReqTask(ag_context, ppmp, APP_GET_ERROR_LOG_URL, HttpMethod::HTTP_GET),
     app_name_(app_name),
     page_(page),
     page_size_(page_size),

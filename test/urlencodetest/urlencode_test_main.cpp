@@ -4,6 +4,7 @@
 #include "base/sha1.h"
 #include <memory.h>
 #include "base/base64.h"
+#include "base/logging.h"
 
 //INITIALIZE_EASYLOGGINGPP
 

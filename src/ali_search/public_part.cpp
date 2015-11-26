@@ -1,6 +1,7 @@
 #include "ali_search/public_part.h"
 #include "base/basedefines.h"
 #include "base/helpmethods.h"
+#include "base/logging.h"
 
 namespace aos{
 

@@ -2,7 +2,6 @@
 #define ALI_OPENSEARCH_ALI_SEARCH_PUBLIC_PART_H_
 
 #include "base/baseinclude.h"
-#include "ali_search/keyvalue.h"
 #include <set>
 
 namespace aos{

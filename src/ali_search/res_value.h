@@ -6,7 +6,7 @@
 #include "json/json.h"
 
 namespace aos{
-
+  class Json::Value;
   //////////////////////////////////////////////////////////////////////////////
   struct AosError{
     AosError() :error_code(0){
@@ -15,56 +15,6 @@ namespace aos{
     std::string message;
   };
   typedef std::vector<AosError> AosErrors;
-
-  // For get app status
-  struct Instance{
-    bool out_of_limit;
-  };
-  struct Qps{
-    bool out_of_limit;
-  };
-  struct Quota{
-    Quota(){
-      instance.out_of_limit = false;
-      qps.out_of_limit = false;
-    }
-    Instance instance;
-    Qps qps;
-  };
-
-  struct Row{
-    std::string name;
-    std::string type;
-    std::string is_multi;
-    std::string is_pk;
-    std::string src;
-  };
-
-  typedef std::vector<Row> Rows;
-
-  struct Table{
-    std::string table_name;
-    Rows rows;
-  };
-
-  typedef std::vector<Table> Tables;
-
-  struct FromTable{
-    Tables tables;
-  };
-
-  struct Fields{
-    FromTable from_table;
-  };
-
-  struct StatusResult{
-    std::string index_name;
-    uint32 pv;
-    uint32 doc_last_update_time;
-    uint32 total_doc_num;
-    Quota quota;
-    Fields fields;
-  };
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -99,24 +49,6 @@ namespace aos{
     double search_time_;
   };
 
-  //////////////////////////////////////////////////////////////////////////////
-  class AppStatusResValue : public ResValue{
-  public:
-    typedef std::shared_ptr<AppStatusResValue> Ptr;
-    AppStatusResValue();
-    StatusResult &Result() { return result_; }
-    virtual ~AppStatusResValue();
-  private:
-    virtual bool ParsePrivateResult(Json::Value &json_res);
-    // parse the table
-    void ParseTable(Table &table, 
-      const std::string &table_name, 
-      Json::Value &table_json);
-    // parse the table row
-    void ParseRow(Row &row, const std::string &row_name, Json::Value &row_json);
-  private:
-    StatusResult result_;
-  };
 
   //////////////////////////////////////////////////////////////////////////////
 }

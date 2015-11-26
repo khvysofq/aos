@@ -45,6 +45,7 @@ MESSAGE(STATUS "Step 4 : Add code source")
 #Step 5 : Add executable or library target
 MESSAGE(STATUS "Step 5 : Add executable or library target")
 ADD_executable(${BUILD_PROJECT_NAME} ${SRC_LIST})
+set_property(TARGET ${BUILD_PROJECT_NAME} PROPERTY FOLDER ${PROJECT_SET_NAME_TEST})
 #########################################################################
 #Step 6 : link with other library
 MESSAGE(STATUS "Step 6 : link with other library")

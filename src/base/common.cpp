@@ -42,6 +42,7 @@
 #include <algorithm>
 #include "base/common.h"
 #include "base/baseinclude.h"
+#include "base/logging.h"
 //#include "easylogging++.h"
 
 //////////////////////////////////////////////////////////////////////

@@ -92,10 +92,11 @@ namespace aos{
   const char RES_SUGGEST_INDEX_NAME[] = "index_name";
   const char RES_SUGGEST_NAME[] = "suggest_name";
   const char RES_SUGGEST_HIT[] = "hit";
+  const char RES_SUGGESTIONS[] = "suggestions";
 
   // Reindex 
   const char APP_REINDEX_URL[] = "/index";
-  const char RES_REINDEX_ACTION_CREATATASK[] = "action";
+  const char RES_REINDEX_ACTION_CREATATASK[] = "createtask";
   const char RES_REINDEX_OPERATE[] = "operate";
   const char RES_REINDEX_OPERATE_IMPORT[] = "import";
   const char RES_REINDEX_TABLE_NAME[] = "table_name";

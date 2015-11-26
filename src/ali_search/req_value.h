@@ -201,6 +201,7 @@ namespace aos{
     virtual const std::string Express();
     virtual bool IsValue();
 
+    const std::string group_key(){ return group_key_; }
 
     // about the range
     void AddAggRange(uint32 min, uint32 max);
@@ -227,7 +228,7 @@ namespace aos{
     }
 
   private:
-    AggregateStanza(const std::string &group_key);
+    AggregateStanza(const std::string &group_key, const std::string &agg_fun);
     friend class AliOpenSearch;
 
   private:
@@ -297,6 +298,7 @@ namespace aos{
 
     bool AddKvpair(const std::string &key, const std::string value);
     void Clear(){ keyvalues_.clear(); }
+    std::set<std::string> &keyvalues(){ return keyvalues_; }
   private:
     KvpairsStanza(const std::string &key, const std::string value);
     friend class AliOpenSearch;

@@ -1,4 +1,5 @@
 #include "ali_search/keyvalue.h"
+#include "base/logging.h"
 
 namespace aos{
 

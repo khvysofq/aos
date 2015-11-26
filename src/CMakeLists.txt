@@ -47,8 +47,7 @@ SET(SRC_LIST
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	
@@ -86,8 +85,7 @@ SOURCE_GROUP(base FILES
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
 	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/logging.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
 	)
