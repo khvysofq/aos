@@ -6,7 +6,6 @@
 #include "json/json.h"
 
 namespace aos{
-  class Json::Value;
   //////////////////////////////////////////////////////////////////////////////
   struct AosError{
     AosError() :error_code(0){
