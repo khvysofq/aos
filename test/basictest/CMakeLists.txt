@@ -22,6 +22,14 @@ foreach(link_dir ${link_dirs})
   message(STATUS "    link directory='${link_dir}'")
 endforeach()
 
+ if(WIN32)
+	 ADD_DEFINITIONS(
+	 )
+ else()
+	 ADD_DEFINITIONS(
+		-std=c++11
+	 )
+ endif()
 #########################################################################
 #Step 3 : Add code source
 SET(SRC_LIST 
@@ -50,7 +58,6 @@ IF(WIN32)
 	)
 ELSE()
 	TARGET_LINK_LIBRARIES(${BUILD_PROJECT_NAME} 
-		-std=c++11
 		${ALIYUN_OPENSEARCH_LINK_LIB}
 	)
 ENDIF()
