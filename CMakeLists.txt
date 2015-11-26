@@ -54,7 +54,6 @@ ELSE()
 		libcurl.dylib
 		libglog.a
 		pthread
-		rt
 		)
 ENDIF()
 
