@@ -51,7 +51,7 @@ ELSE()
 	SET(ALIYUN_OPENSEARCH_LINK_LIB
 		libali_opensearch.a
 		libjsoncpp.a
-		libcurl.so
+		-lcurl.so
 		libglog.a
 		pthread
 		rt
