@@ -22,7 +22,7 @@ const std::string B64_STR = "fxGidmIYSsx2AMa8onxuavOijuE=";
 
 int main(int argv, char* argc[]){
 
-  LOG(INFO) << SIGN_STR;
+  LOG_INFO << SIGN_STR;
 
   unsigned char digest_buffer[SHA1_DIGEST_SIZE];
 
@@ -37,7 +37,7 @@ int main(int argv, char* argc[]){
   std::string result;
   std::size_t data_used = 0;
   aos::HelpMethos::HmacSha1ToBase64(KEY, SIGN_STR, result);
-  LOG(INFO) << result;
+  LOG_INFO << result;
 
   //aos::Base64::DecodeFromArray(B64_STR.c_str(), B64_STR.size(),
   //  aos::Base64::DecodeOption::DO_PARSE_STRICT, &result, &data_used);

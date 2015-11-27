@@ -6,7 +6,7 @@
 #include "easylogging++.h"
 #endif
 
-#define GOOGLE_GLOG_LIBRARY
+//#define GOOGLE_GLOG_LIBRARY
 #ifdef GOOGLE_GLOG_LIBRARY
 #include "glog/logging.h"
 #endif

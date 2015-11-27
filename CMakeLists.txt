@@ -17,17 +17,47 @@ SET(EASYLOGGINGPP ${PROJECT_SOURCE_DIR}/third_part/easyloggingpp)
 SET(JSON_CPP ${PROJECT_SOURCE_DIR}/third_part/jsoncpp)
 SET(GLOG ${PROJECT_SOURCE_DIR}/third_part/glog)
 
+option(USE_GLOG "Set to ON to USE Glog executable." ON)
+
 ##1. INCLUDE_DIRECTORES
 MESSAGE(STATUS "Step 1 :  Add include directores")
-SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
-	${LIB_CURL}/include
-	${PROJECT_BINARY_DIR}/third_part/curl/include/curl
-	${PROJECT_BINARY_DIR}/third_part/glog
-	${EASYLOGGINGPP}/src
-	${JSON_CPP}/include
-	${GLOG}/src
-	${PROJECT_SOURCE_DIR}/src
-)
+IF(USE_GLOG)
+	SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
+		${LIB_CURL}/include
+		${PROJECT_BINARY_DIR}/third_part/curl/include/curl
+		${PROJECT_BINARY_DIR}/third_part/glog
+		${GLOG}/src
+		${EASYLOGGINGPP}/src
+		${JSON_CPP}/include
+		${PROJECT_SOURCE_DIR}/src
+	)
+ELSE()
+	SET(ALIYUN_OPENSEARCH_INCLUDE_DIR
+		${LIB_CURL}/include
+		${PROJECT_BINARY_DIR}/third_part/curl/include/curl
+		${EASYLOGGINGPP}/src
+		${JSON_CPP}/include
+		${PROJECT_SOURCE_DIR}/src
+	)
+ENDIF()
+
+IF(USE_GLOG)
+	IF(WIN32)
+		SET(GLOG_LIB_NAME glog.lib)
+	ELSE()
+		SET(GLOG_LIB_NAME glog.a)
+	ENDIF()
+ELSE()
+		SET(GLOG_LIB_NAME "")
+ENDIF()
+
+IF(WIN32)
+	SET(LIBCURL_LIB_NAME libcurl.lib)
+ELSEIF(APPLE)
+	SET(LIBCURL_LIB_NAME libcurl.dylib)
+ELSE()
+	SET(LIBCURL_LIB_NAME libcurl.so)
+ENDIF()
 
 ##2 LIBRARY PATH
 MESSAGE(STATUS "Step 2 :  Add library path and public link library")
@@ -40,7 +70,7 @@ IF(WIN32)
 		libcurl_imp.lib
 		jsoncpp.lib
 		winmm.lib
-		glog.lib
+		${GLOG_LIB_NAME}
 		libali_opensearch.lib
 		)
 ELSE()
@@ -51,8 +81,8 @@ ELSE()
 	SET(ALIYUN_OPENSEARCH_LINK_LIB
 		libali_opensearch.a
 		libjsoncpp.a
-		libcurl.dylib
-		libglog.a
+		${LIBCURL_LIB_NAME}
+		${GLOG_LIB_NAME}
 		pthread
 		)
 ENDIF()
@@ -62,15 +92,21 @@ MESSAGE(STATUS "Step 3 :  Add More defines")
  if(WIN32)
 	 ADD_DEFINITIONS(
 		 -D_CRT_SECURE_NO_WARNINGS
-		-DGOOGLE_GLOG_DLL_DECL=
 		-DGLOG_NO_ABBREVIATED_SEVERITIES
 	 )
  else()
 	 ADD_DEFINITIONS(
-		-DGOOGLE_GLOG_DLL_DECL=
 	 )
  endif()
 
+ 
+IF(USE_GLOG)
+	 ADD_DEFINITIONS(
+		-DGOOGLE_GLOG_LIBRARY
+		-DGOOGLE_GLOG_DLL_DECL=
+	 )
+ENDIF()
+ 
 INCLUDE_DIRECTORIES(${ALIYUN_OPENSEARCH_INCLUDE_DIR})
 LINK_DIRECTORIES(${ALIYUN_OPENSEARCH_LIBRARY_DIR})
 #####################################################################
@@ -122,7 +158,11 @@ ENDIF()
 ## Setp 3
 ADD_SUBDIRECTORY(third_part/curl)
 ADD_SUBDIRECTORY(third_part/jsoncpp)
-ADD_SUBDIRECTORY(third_part/glog)
+
+IF(USE_GLOG)
+	ADD_SUBDIRECTORY(third_part/glog)
+ENDIF()
+
 ADD_SUBDIRECTORY(src)
 
 ADD_SUBDIRECTORY(test/basictest)

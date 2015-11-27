@@ -6,10 +6,12 @@
 //INITIALIZE_EASYLOGGINGPP
 
 int main(int argv, char* argc[]){
+#ifdef GOOGLE_GLOG_LIBRARY
   google::InitGoogleLogging(argc[0]);
   FLAGS_logtostderr = true;
   FLAGS_stderrthreshold = 0;
   FLAGS_colorlogtostderr = true;
+#endif
   std::cout << "Hello World" << std::endl;
 
   LOG_INFO << "Hello World";
