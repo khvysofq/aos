@@ -1,3 +1,4 @@
+https://travis-ci.org/khvysofq/aos.svg?branch=master
 # aliyun opensearch c++ sdk
 
 ## 编译配置
@@ -61,6 +62,8 @@ cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -D
 
 2. 用户在使用的时候要要记得将`git_path/aliyun_opensearch/bin/win/libcurl.dll`库复制到自己的程序目录下才能够运行起得程序。
 
+3. 在使用的时候如果没有选择去掉GLOG日志库，那么最好在头文件中定义`GOOGLE_GLOG_LIBRARY`和`GOOGLE_GLOG_DLL_DECL=`两个宏。
+
 由于使用了三个开源库，而这些库又有自己的头文件，因此在包含头文件的时候要指定如下几个路径在自己工程中才能够正确的使用
 - `git_path/aliyun_opensearch/src`，用户需要包含主要的头文件使用时`#include "ali_search/ali_search.h"`
 - `git_path/aliyun_opensearch/third_part/jsoncpp/include`,这是Json的库，用户能够直接使用到。
@@ -103,6 +106,8 @@ Linux平台我们已经指定了编译顺序，只需要使用`make`命令执行
 	  FLAGS_colorlogtostderr = true;
 	}
 ```
+
+> 在使用的时候如果没有选择去掉GLOG日志库，那么最好在头文件中定义`GOOGLE_GLOG_LIBRARY`和`GOOGLE_GLOG_DLL_DECL=`两个宏。
 
 ## 简介
 
@@ -927,6 +932,54 @@ ScrollSearch通过以下接口创建`Scroll::Ptr`对象
 ```
 
 从`CreateScroll`上面可以看到一些默认的参数。在第一次搜索的时候只需要指定一个`scroll_time`就行了，执行第一次搜索之后，内部会自动更新`Scroll`的`scroll_id`字段。未来就可以再一次调用`ScrollSearch`传入同样的参数得到下一次搜索的结果。当然在这个过程当中你也可以修改一些`Scroll`的值，从而进行更加精确的操作，具体的值参考`Scorll`定义，具体的使用方法可以参数官方的API文档。
+
+## 如何切换或者去掉日志库
+
+在`libali_opensearch`中使用到了日志库，但是我们也充分考虑到用户系统有自己的日志库，因此我们这里提供了一个简单的方法来去掉或者替换日志库的能力。首先在源代码`src/base/logging.h`中，对日志库有这样统一的定义
+
+```c++
+//#define EASY_LOGGING_CPP
+#ifdef EASY_LOGGING_CPP
+#include "easylogging++.h"
+#endif
+
+//#define GOOGLE_GLOG_LIBRARY
+#ifdef GOOGLE_GLOG_LIBRARY
+#include "glog/logging.h"
+#endif
+
+namespace aos{
+
+#ifdef GOOGLE_GLOG_LIBRARY
+
+#define LOG_INFO LOG(INFO)
+#define LOG_WARNING LOG(WARNING)
+#define LOG_ERROR LOG(ERROR)
+
+#define DLOG_INFO DLOG(INFO)
+#define DLOG_WARNING DLOG(WARNING)
+#define DLOG_ERROR DLOG(WARNING)
+#else
+
+#define LOG_INFO std::cout
+#define LOG_WARNING std::cout
+#define LOG_ERROR std::cout
+
+#define DLOG_INFO std::cout
+#define DLOG_WARNING std::cout
+#define DLOG_ERROR std::cout
+#endif
+}
+```
+
+可以看到，我们间接的使用了不同的日志库，在`libali_opensearch`与测试程序中，都是通过使用`LOG_INFO`、`LOG_WARNING`、`LOG_ERROR`、`DLOG_INFO`、`DLOG_WARNING`、`DLOG_ERROR`的方式来进行间接使用的。因此用户可以修改里面的定义，来定制自己的日志库。
+
+在使用CMAKE生成工程的时候，当前默认使用GLOG日志库。如果不想使用GLOG日志库可以使用下面的命令来生成工程
+```bash
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
+```
+
+与前面最重要的差别就是去掉了选择`-DWITH_GFLAGS=OFF`,同时添加了选择`-DUSE_GLOG=OFF`。这样生成的工程会在编译的时候自动去掉`GOOGLE_GLOG_LIBRARY`宏定义。让库中的日志信息输出到`std::cout`中去。
 
 ## license
 
