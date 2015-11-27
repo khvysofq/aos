@@ -1,6 +1,8 @@
 #ifndef ALI_OPENSEARCH_BASE_LOGGING_H_
 #define ALI_OPENSEARCH_BASE_LOGGING_H_
 
+#include <iostream>
+
 //#define EASY_LOGGING_CPP
 #ifdef EASY_LOGGING_CPP
 #include "easylogging++.h"
