@@ -1,4 +1,4 @@
-https://travis-ci.org/khvysofq/aos.svg?branch=master
+[![Build Status](https://travis-ci.org/khvysofq/aos.svg)](https://travis-ci.org/khvysofq/aos)
 # aliyun opensearch c++ sdk
 
 ## 编译配置
@@ -16,6 +16,7 @@ https://travis-ci.org/khvysofq/aos.svg?branch=master
 
 - Windows Microsoft Visual Studio 2013 
 - Ubuntu 64 GCC 4.8
+- [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") 在去掉`Glog`的情况下通过编译(Linux和OS X)平台
 
 ### 下载工程
 
@@ -42,6 +43,14 @@ cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -D
 ```
 
 这一条命令会在Windows平台上面生成VS工程，在Linux平台上面生成Makefile文件。
+
+如果编译不通过，有可能是因为`Glog`的问题，您可以通过以下的命令编译在编译之前，首先删除所有上一次使用cmake 在`git_path/aliyun_opensearch/build`下生成的文件。然后使用命令：
+
+```c++
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
+```
+
+这种编译是去掉了`Glog`日志库，可能会导致`libali_opensearch`的打印没有换行。在后面的版本中将会修复这个问题。具体关于去掉或者替换日志库可以看查看**本文最后**的**如何切换或者去掉日志库**
 
 ### Windows平台上编译并使用
 
