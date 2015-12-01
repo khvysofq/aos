@@ -1,13 +1,3 @@
-platform: 
-  - linux
-  - osx
-analyzers:
- - cpplint: true
-   include: ["*.cpp", "*.h", "*.hpp", "*.c"]
-   path: 
-   - ./src/ali_search
-   - ./src/base
-   filters:
-   - -whitespace
-   - +whitespace/braces
-   style: google
+cpp:
+  lint: true
+  style: google
