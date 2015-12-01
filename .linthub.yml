@@ -1,5 +1,4 @@
 platform: linux | osx
-
 analyzers:
  - cpplint: true
    include: ["*.cpp", "*.h", "*.hpp", "*.c"]
