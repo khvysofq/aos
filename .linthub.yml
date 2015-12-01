@@ -1,8 +1,12 @@
-platform: linux | osx
+platform: 
+  - linux
+  - osx
 analyzers:
  - cpplint: true
    include: ["*.cpp", "*.h", "*.hpp", "*.c"]
-   path: ./src/ali_search
+   path: 
+   - ./src/ali_search
+   - ./src/base
    filters:
    - -whitespace
    - +whitespace/braces
