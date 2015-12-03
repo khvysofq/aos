@@ -6,15 +6,12 @@ compiler:
 
 before_install:
   - git submodule update --init --recursive
-  - if [ "$TRAVIS_OS_NAME" == "linux"]; then sudo apt-get update -qq; fi
-  - if [ "$TRAVIS_OS_NAME" == "linux"]; then sudo apt-get install -y -qq lcov curl; fi
 
 install: 
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - mkdir build
   - cd build
-  - if [ "$TRAVIS_OS_NAME" == "linux"]; then cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF -DCMAKE_BUILD_TYPE=Debug -DCOVERALLS=ON; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx"]; then cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF; fi
+  - cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
 
 addons:
   apt:
@@ -29,10 +26,7 @@ addons:
 
 script:
  - $CXX --version 
- - cmake --build .
- - if [ "$TRAVIS_OS_NAME" == "linux"]; then export COVERALLS_SERVICE_NAME=travis-ci; fi
- - if [ "$TRAVIS_OS_NAME" == "linux"]; then export COVERALLS_REPO_TOKEN=UkCVBtNGb4zpy4MeRjOct0biCe8i39uoR; fi
- - if [ "$TRAVIS_OS_NAME" == "linux"]; then cmake --build . --target coveralls; fi
+ - make
 
 os:
   - linux
