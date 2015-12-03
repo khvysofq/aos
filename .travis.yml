@@ -9,6 +9,8 @@ before_install:
 
 install: 
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -qq lcov curl
   - mkdir build
   - cd build
   - cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
