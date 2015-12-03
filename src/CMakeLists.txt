@@ -66,8 +66,6 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
-
-SET(PROJECT_MAIN_SRC_LIST SRC_LIST)
 	
 SOURCE_GROUP(base FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.h
@@ -108,7 +106,13 @@ SOURCE_GROUP(ali_search FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
-
+	
+if (COVERALLS)
+	coveralls_setup(
+        "${SRC_LIST}"
+        ${COVERALLS_UPLOAD}                 
+        "${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake")
+endif()
 #########################################################################
 #Step 4 : Add PROJECT define 
 MESSAGE(STATUS "Step 4 : Add code source")

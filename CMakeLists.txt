@@ -9,7 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS On)
 SET(PROJECT_SET_NAME_TEST "test")
 SET(PROJECT_SET_NAME_LIB "lib")
 SET(PROJECT_SET_NAME_THIRD_PART "third_part")
-SET(PROJECT_MAIN_SRC_LIST "")
+#SET(PROJECT_MAIN_SRC_LIST "")
 ##########################################################
 ## Step 1 
 SET(LIB_CURL ${PROJECT_SOURCE_DIR}/third_part/curl)
@@ -22,7 +22,7 @@ option(COVERALLS "Turn on coveralls support" OFF)
 option(COVERALLS_UPLOAD "Upload the generated coveralls json" ON)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} 
-	${PROJECT_SOURCE_DIR}/cmake)
+	${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake)
 
 if (COVERALLS)
 	include(Coveralls)
@@ -175,52 +175,52 @@ ENDIF()
 
 ADD_SUBDIRECTORY(src)
 
-SET(SRC_LIST 
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/basedefines.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/basedefines.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/noncopyable.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/baseinclude.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/helpmethods.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/helpmethods.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/basictypes.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/timeutils.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/timeutils.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/base64.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/base64.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/sha1.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/sha1.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/logging.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/common.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/base/common.cpp
+# SET(SRC_LIST 
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/basedefines.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/basedefines.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/noncopyable.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/baseinclude.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/helpmethods.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/helpmethods.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/basictypes.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/timeutils.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/timeutils.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/base64.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/base64.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/sha1.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/sha1.cpp
+	# #${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
+	# #${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
+	# #${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
+	# #${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/logging.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/common.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/base/common.cpp
 	
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/ali_search.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/ali_search.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/public_part.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/public_part.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/keyvalue.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/keyvalue.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/res_value.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/res_value.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_value.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_value.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_task.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_task.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/aoscontext.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/aoscontext.cpp
-	)
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/ali_search.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/ali_search.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/public_part.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/public_part.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/keyvalue.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/keyvalue.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/res_value.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/res_value.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_value.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_value.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_task.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/req_task.cpp
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/aoscontext.h
+	# ${CMAKE_CURRENT_SOURCE_DIR}/src/ali_search/aoscontext.cpp
+	# )
 
 # Setup the coveralls target and tell it to gather
 # coverage data for all the lib sources.
-if (COVERALLS)
-	coveralls_setup(
-        "${SRC_LIST}"
-        ${COVERALLS_UPLOAD}                 
-        "${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake")
-endif()
+# if (COVERALLS)
+	# coveralls_setup(
+        # "${SRC_LIST}"
+        # ${COVERALLS_UPLOAD}                 
+        # "${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake")
+# endif()
 
 
 # Add a test for the library.
