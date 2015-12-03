@@ -67,6 +67,8 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
 
+SET(PROJECT_MAIN_SRC_LIST SRC_LIST)
+	
 SOURCE_GROUP(base FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.cpp

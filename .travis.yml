@@ -26,7 +26,8 @@ addons:
 
 script:
  - $CXX --version 
- - make
+ - cmake --build .
+ - cmake --build . --target coveralls
 
 os:
   - linux
