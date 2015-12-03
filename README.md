@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/khvysofq/aos.svg)](https://travis-ci.org/khvysofq/aos)
+[![Coverage Status](https://coveralls.io/repos/khvysofq/aos/badge.svg?branch=master&service=github)](https://coveralls.io/github/khvysofq/aos?branch=master)
 # aliyun opensearch c++ sdk
 
 ## 编译配置

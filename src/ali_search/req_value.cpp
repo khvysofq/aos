@@ -90,7 +90,7 @@ namespace aos{
     return true;
   }
   // FLOAT
-  bool PushItem::AddField(const std::string &key, float value){
+  bool PushItem::AddField(const std::string &key, double value){
     try{
       fields_json_[key] = value;
     }

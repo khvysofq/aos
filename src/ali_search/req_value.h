@@ -45,7 +45,7 @@ namespace aos{
     // INT ARRAY
     bool AddField(const std::string &key, std::vector<int> &value);
     // FLOAT
-    bool AddField(const std::string &key, float value);
+    bool AddField(const std::string &key, double value);
     // FLOAT ARRAY
     bool AddField(const std::string &key, std::vector<float> &value);
 
@@ -98,7 +98,7 @@ namespace aos{
     uint32 start() { return start_; }
     void set_start(uint32 start) { start_ = start; }
     //
-    uint32 hit();
+    uint32 hit(){ return hit_; };
     void set_hit(uint32 hit){ hit_ = hit; }
     //
     TextFormat format() { return format_; }
