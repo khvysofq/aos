@@ -19,6 +19,7 @@ int main(int argv, char* argc[]){
   aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
   aos::AggregateStanza::Ptr ags = aosp->CreateAggregateStanza(
     "type_id", "count()");
+  ags->group_key();
 
   aos::Query::Ptr query = aosp->CreateQuery(qa);
   query->set_aggregate_stanza(ags);
@@ -32,6 +33,12 @@ int main(int argv, char* argc[]){
   else{
     LOG_ERROR << res_value->GetErrorMessage()[0].message;
   }
+  ags->ClearRange();
+  ags->ClearAggFunc();
+  ags->set_max_group(120);
+  ags->set_agg_sampler_step(1);
+  ags->set_agg_sampler_threshold(10);
+  ags->set_agg_filter("id>10");
   //getchar();
   //aos::QueryStanza::Ptr d = (a->)
   return 0;

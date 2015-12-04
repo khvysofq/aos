@@ -38,6 +38,7 @@ int main(int argv, char* argc[]){
   else{
     LOG_ERROR << res_value->GetErrorMessage()[0].message;
   }
+  kvs->Clear();
   //getchar();
   //aos::QueryStanza::Ptr d = (a->)
   return 0;

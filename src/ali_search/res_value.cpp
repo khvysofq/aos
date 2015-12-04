@@ -59,7 +59,7 @@ namespace aos{
     }
     else{
       LOG_ERROR << "The result status is not the expectations value " << status_str;
-      ASSERT(false);
+      //ASSERT(false);
     }
     return false;
   }

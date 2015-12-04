@@ -44,15 +44,30 @@ int main(int argv, char* argc[]){
   push_item1->AddField("url", "www.baidu.com");
 
   aos::PushItem::Ptr push_item2 = aosp->CreatePushItem(
-    aos::PushItemType::ITEM_TYPE_ADD, "2");
+    aos::PushItemType::ITEM_TYPE_DELETE, "200");
   push_item2->AddField("type_id", "12");
   push_item2->AddField("cat_id", "13");
   push_item2->AddField("title", "test");
   push_item2->AddField("body", "This is a test, about something");
   push_item2->AddField("url", "www.baidu.com");
 
+
+  aos::PushItem::Ptr push_item3 = aosp->CreatePushItem(
+    aos::PushItemType::ITEM_TYPE_UPDATE, "3");
+  push_item3->AddField("type_id", 12);
+  push_item3->AddField("cat_id", 12.3);
+  push_item3->AddField("title", "test");
+  std::vector<int> bodys;
+  bodys.push_back(1);
+  bodys.push_back(2);
+  bodys.push_back(3);
+  bodys.push_back(4);
+  push_item3->AddField("body", bodys);
+  push_item3->AddField("url", "www.baidu.com");
+
   aos::PushForm::Ptr push_form = aosp->CreatePushForm(push_item1);
   push_form->AddPushItem(push_item2);
+  push_form->AddPushItem(push_item3);
 
   aos::ResValue::Ptr res = aosp->PushIndexDoc("HELLO", "main", push_form);
 

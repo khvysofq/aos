@@ -28,5 +28,7 @@ int main(int argv, char* argc[]){
 
   LOG_INFO << aos::HelpMethos::URLEncode(TIME_UTC_STR);
 
+  LOG_INFO << aos::HelpMethos::GetRandNumString(128);
+
   return 0;
 }

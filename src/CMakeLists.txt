@@ -81,14 +81,14 @@ SET(CONVERALLS_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
 	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.h
 	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
+	##${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
+	##${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
 
 SOURCE_GROUP(base FILES
