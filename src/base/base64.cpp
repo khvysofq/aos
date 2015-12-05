@@ -15,6 +15,7 @@
 //*********************************************************************
 
 #include "base/base64.h"
+#include <string.h>
 #include <string>
 #include <vector>
 #include "base/common.h"
