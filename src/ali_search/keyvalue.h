@@ -15,24 +15,38 @@
 * limitations under the License.
 */
 
-#include <iostream>
+
+#ifndef SRC_ALI_SEARCH_KEYVALUE_H_
+#define SRC_ALI_SEARCH_KEYVALUE_H_
+
+#include <string>
 #include "base/baseinclude.h"
-#include "base/logging.h"
-//#include "easylogging++.h"
 
-//INITIALIZE_EASYLOGGINGPP
+namespace aos {
 
-int main(int argv, char* argc[]) {
-#ifdef GOOGLE_GLOG_LIBRARY
-  google::InitGoogleLogging(argc[0]);
-  FLAGS_logtostderr = true;
-  FLAGS_stderrthreshold = 0;
-  FLAGS_colorlogtostderr = true;
-#endif
-  std::cout << "Hello World" << std::endl;
+class KeyValue {
+ public:
+  explicit KeyValue(const std::string &key, const std::string &value);
 
-  LOG_INFO << "Hello World";
-  LOG_WARNING << "Hello World";
-  LOG_ERROR << "Hello World";
-  return 0;
-}
+  const std::string &key() const {
+    return key_;
+  }
+  const std::string &value() const {
+    return value_;
+  }
+
+  void set_key(const std::string &key) {
+    key_ = key;
+  }
+  void set_value(const std::string &value) {
+    value_ = value;
+  }
+
+  bool operator<(const KeyValue &kv) const;
+ public:
+  std::string key_;
+  std::string value_;
+};
+}  // namespace aos
+
+#endif  // SRC_ALI_SEARCH_KEYVALUE_H_

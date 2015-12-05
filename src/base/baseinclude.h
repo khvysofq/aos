@@ -15,24 +15,35 @@
 * limitations under the License.
 */
 
-#include <iostream>
-#include "base/baseinclude.h"
-#include "base/logging.h"
-//#include "easylogging++.h"
-
-//INITIALIZE_EASYLOGGINGPP
-
-int main(int argv, char* argc[]) {
-#ifdef GOOGLE_GLOG_LIBRARY
-  google::InitGoogleLogging(argc[0]);
-  FLAGS_logtostderr = true;
-  FLAGS_stderrthreshold = 0;
-  FLAGS_colorlogtostderr = true;
+#ifdef WIN32
+#pragma execution_character_set("utf-8")
 #endif
-  std::cout << "Hello World" << std::endl;
 
-  LOG_INFO << "Hello World";
-  LOG_WARNING << "Hello World";
-  LOG_ERROR << "Hello World";
-  return 0;
-}
+#ifndef SRC_BASE_BASEINCLUDE_H_
+#define SRC_BASE_BASEINCLUDE_H_
+
+
+// For std::shared_ptr, std::enable_shared_form_this
+#include <memory>
+// For std::mutex
+#include <mutex>
+#include <iostream>
+
+
+#include <set>
+#include <map>
+#include <string>
+
+#include "base/noncopyable.h"
+// With basic types
+#include "base/basictypes.h"
+
+namespace aos {
+
+typedef std::map<std::string, std::string > KeyValues;
+typedef std::pair<KeyValues::iterator, bool> KVSInsertResult;
+
+}  // namespace aos
+
+
+#endif  // SRC_BASE_BASEINCLUDE_H_
