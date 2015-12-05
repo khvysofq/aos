@@ -18,6 +18,7 @@
 #ifndef SRC_ALI_SEARCH_REQ_TASK_H_
 #define SRC_ALI_SEARCH_REQ_TASK_H_
 
+#include <string>
 #include "base/baseinclude.h"
 #include "ali_search/public_part.h"
 #include "ali_search/aoscontext.h"

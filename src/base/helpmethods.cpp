@@ -16,6 +16,7 @@
 */
 
 #include "base/helpmethods.h"
+#include <string>
 #include <time.h>
 #include <stdio.h>
 #include <string.h>

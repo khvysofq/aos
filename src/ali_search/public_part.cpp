@@ -16,6 +16,8 @@
 */
 
 #include "ali_search/public_part.h"
+#include <map>
+#include <string>
 #include "base/basedefines.h"
 #include "base/helpmethods.h"
 #include "base/logging.h"

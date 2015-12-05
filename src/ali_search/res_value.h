@@ -18,6 +18,8 @@
 #ifndef SRC_ALI_SEARCH_RES_VALUE_H_
 #define SRC_ALI_SEARCH_RES_VALUE_H_
 
+#include <string>
+#include <vector>
 #include "base/baseinclude.h"
 #include "base/basictypes.h"
 #include "json/json.h"

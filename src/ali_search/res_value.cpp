@@ -16,6 +16,7 @@
 */
 
 #include "ali_search/res_value.h"
+#include <string>
 #include "base/common.h"
 #include "base/basedefines.h"
 #include "base/logging.h"
