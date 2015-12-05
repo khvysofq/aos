@@ -19,6 +19,8 @@
 #define SRC_ALI_SEARCH_PUBLIC_PART_H_
 
 #include <set>
+#include <map>
+#include <string>
 #include "base/baseinclude.h"
 
 namespace aos {
@@ -31,7 +33,7 @@ class PublicPartManager : public noncopyable,
                     const std::string &access_key_secret);
 
   // Thread safe
-  void CopyPublicPart(std::map<std::string, std::string> &kvs);
+  void CopyPublicPart(std::map<std::string, std::string> &kvs);  // NOLINT
   const std::string &access_key_secret() const {
     return access_key_secret_;
   }

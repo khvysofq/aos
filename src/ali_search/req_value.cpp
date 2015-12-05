@@ -1,6 +1,3 @@
-#include "ali_search/req_value.h"
-#include "base/basedefines.h"
-#include "base/common.h"
 /*
 * libali_opensearch
 * Copyright 2015 guangleihe@gmail.com.
@@ -18,6 +15,13 @@
 * limitations under the License.
 */
 
+#include "ali_search/req_value.h"
+#include <map>
+#include <string>
+#include <vector>
+#include <set>
+#include "base/basedefines.h"
+#include "base/common.h"
 #include "base/helpmethods.h"
 #include "base/logging.h"
 #include "json/json.h"

@@ -35,9 +35,9 @@ class AosGlobalContext : public noncopyable,
   // This function is not thread-safe
   static AosGlobalContext::Ptr InitAosGlobalContext();
 
-  bool SyncProcessGetRequest(const std::string &url, std::string &rep);
-  bool SyncProcessPostRequest(const std::string &url,
-                              const std::string &data, std::string &rep);
+  bool SyncProcessGetRequest(const std::string &url, std::string &rep);  // NOLINT
+  bool SyncProcessPostRequest(const std::string &url,  // NOLINT
+    const std::string &data, std::string &rep);  // NOLINT
  private:
   //
   AosGlobalContext();

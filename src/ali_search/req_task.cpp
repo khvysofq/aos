@@ -16,6 +16,8 @@
 */
 
 #include "ali_search/req_task.h"
+#include <map>
+#include <string>
 #include "base/basedefines.h"
 #include "json/json.h"
 #include "base/common.h"
