@@ -17,7 +17,7 @@ This project implements aliyun opensearch api by c++.
 - [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") build pass. and build succeed on windows too.
 - [coveralls.io](https://coveralls.io/github/khvysofq/aos?branch=master") unit test coverage status 95%
 - valgrind memcheck succeed with all test programms. you can test by use scrpyt `git_path/aliyun_opensearch/valgrind_test/valgrind_test.sh`
-- [linthub.io](https://linthub.io/khvysofq/aos/a7af346f3e031fee72d30a00b525de4ec1676f9d") code style check succeed. but the linthub.io cann't disable some ugly style check as same as [cpplint.py](https://pypi.python.org/pypi/cpplint"). you can used cpplint check the main code style by the filter parameters `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`
+- [linthub.io](https://linthub.io/khvysofq/aos/a7af346f3e031fee72d30a00b525de4ec1676f9d) code style check succeed. but the linthub.io cann't disable some ugly style check as same as [cpplint.py](https://pypi.python.org/pypi/cpplint"). you can used cpplint check the main code style by the filter parameters `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`
 
 ## Requirement
 
