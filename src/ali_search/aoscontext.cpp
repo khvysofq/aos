@@ -87,7 +87,7 @@ static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp) {
     return 0;
   }
   // Use reinterpret_cast<void *>
-  ptr = (void *)(pdata->c_str());
+  ptr = (void *)(pdata->c_str()); // NOLINT
   return pdata->size();
 }
 //////////////////////////////////////////////////////////////////////////////

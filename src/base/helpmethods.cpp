@@ -39,7 +39,7 @@ const std::string HelpMethos::GetCurrentUTCTime() {
   int mic_seconds = 0;
   CurrentTmTime(&tt_tm, &mic_seconds);
 
-  sprintf(temp_buf, "%04d-%02d-%02dT%02d:%02d:%02dZ",
+  sprintf(temp_buf, "%04d-%02d-%02dT%02d:%02d:%02dZ", // NOLINT
           tt_tm.tm_year + 1900,
           tt_tm.tm_mon + 1,
           tt_tm.tm_mday,
@@ -73,7 +73,7 @@ const std::string HelpMethos::GetRandNumString(int size) {
   // Setting the random seed
   srand((unsigned int)TimeNanos());
   for (int i = 0; i < size; i++) {
-    res_str.push_back((rand() % MAX_NUM_SET_SIZE) + '0');
+    res_str.push_back((rand() % MAX_NUM_SET_SIZE) + '0'); // NOLINT
   }
   return res_str;
 }

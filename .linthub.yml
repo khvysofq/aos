@@ -7,6 +7,6 @@ analyzers:
    - -runtime/references
    - -readability/casting
    - -build/c++11
-   - -runtime/printf-
+   - -runtime/printf
    - -runtime/threadsafe_fn
    style: google

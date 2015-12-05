@@ -26,7 +26,7 @@
 // For std::shared_ptr, std::enable_shared_form_this
 #include <memory>
 // For std::mutex
-#include <mutex>
+#include <mutex> // NOLINT
 #include <iostream>
 #include <utility>
 

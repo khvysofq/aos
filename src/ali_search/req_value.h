@@ -74,7 +74,7 @@ class PushItem :public noncopyable, public BaseReqValue {
   // FLOAT
   bool AddField(const std::string &key, double value);
   // FLOAT ARRAY
-  bool AddField(const std::string &key, std::vector<float> &value);
+  bool AddField(const std::string &key, const std::vector<float> &value);
 
  private:
   friend class PushIndexDocTask;
@@ -539,7 +539,7 @@ class Summary : public noncopyable, public BaseReqValue {
           int summary_snipped);
 
   void AddKeyValueToString(std::string &str,  // NOLINT
-    const std::string &key, const std::string &value);  // NOLINT
+                           const std::string &key, const std::string &value);  // NOLINT
   friend class AliOpenSearch;
  private:
   std::string summary_field_;
@@ -636,13 +636,13 @@ class SearchForm : public noncopyable {
  private:
   SearchForm(Query::Ptr query, const std::string &app_name);
   void AddExpress(std::string &express,  // NOLINT
-    const std::string &key, const std::string value);  // NOLINT
+                  const std::string &key, const std::string value);  // NOLINT
   const std::string SearchAppNameExpress();
   const std::string FetchFieldsExpress();
   const std::string QueryProtoExpress();
 
   bool AddKeyValue(std::map<std::string, std::string> &kvs,  // NOLINT
-    const std::string &key, const std::string &value);  // NOLINT
+                   const std::string &key, const std::string &value);  // NOLINT
   bool UpdateKeyValue(std::map<std::string, std::string> &kvs);  // NOLINT
   friend class SearchTask;
   friend class AliOpenSearch;

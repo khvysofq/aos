@@ -120,7 +120,8 @@ bool PushItem::AddField(const std::string &key, double value) {
 }
 
 // FLOAT ARRAY
-bool PushItem::AddField(const std::string &key, std::vector<float> &value) {
+bool PushItem::AddField(const std::string &key,
+                        const std::vector<float> &value) {
   try {
     Json::Value json_array;
     for (std::size_t i = 0; i < value.size(); i++) {

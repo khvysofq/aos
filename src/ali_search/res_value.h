@@ -64,12 +64,12 @@ class ResValue {
   }
 
  private:
-  bool ParsePublicResult(Json::Value &json_res);
-  virtual bool ParsePrivateResult(Json::Value &json_res) {
+  bool ParsePublicResult(Json::Value &json_res); // NOLINT
+  virtual bool ParsePrivateResult(Json::Value &json_res) { // NOLINT
     return true;
   }
 
-  bool ParseErrorMessage(Json::Value &error_res);
+  bool ParseErrorMessage(Json::Value &error_res); // NOLINT
 
  protected:
   std::string rep_buffer_;
