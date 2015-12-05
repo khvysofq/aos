@@ -14,4 +14,6 @@ analyzers:
    - -build/c++11
    - -runtime/printf
    - -runtime/threadsafe_fn
+   extensions:
+   - cpp,h
    style: google
