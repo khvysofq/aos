@@ -27,8 +27,8 @@
 
 // Modify by guangleihe@gmail.com 2015/11/20
 
-#ifndef ALI_OPENSEARCH_BASE_TIMEUTILS_H_
-#define ALI_OPENSEARCH_BASE_TIMEUTILS_H_
+#ifndef SRC_BASE_TIMEUTILS_H_
+#define SRC_BASE_TIMEUTILS_H_
 
 #include <time.h>
 #include "base/common.h"
@@ -101,4 +101,4 @@ namespace aos {
 
 }  // namespace aos
 
-#endif  // ALI_OPENSEARCH_BASE_TIMEUTILS_H_
+#endif  // SRC_BASE_TIMEUTILS_H_

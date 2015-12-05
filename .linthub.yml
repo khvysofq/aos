@@ -1,10 +1,4 @@
 platform: linux | osx
-
-build:
-- mkdir build
-- cd build
-- cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DWITH_GFLAGS=OFF
-- make
 analyzers:
  - cpplint: true
    include: ["*.cpp", "*.h", "*.hpp", "*.c"]
@@ -14,4 +8,10 @@ analyzers:
    filters:
    - -whitespace
    - +whitespace/braces
-   style: google # webkit | google
+   - -build/include_what_you_use
+   - -runtime/references
+   - -readability/casting
+   - -build/c++11
+   - -runtime/printf
+   - -runtime/threadsafe_fn
+   style: google

@@ -26,8 +26,8 @@
  */
 // Modity by guangleihe@gmail.com 2015/11/20
 
-#ifndef ALI_OPENSEARCH_BASE_BASICTYPES_H_
-#define ALI_OPENSEARCH_BASE_BASICTYPES_H_
+#ifndef SRC_BASE_BASICTYPES_H_
+#define SRC_BASE_BASICTYPES_H_
 
 #include <stddef.h>  // for NULL, size_t
 
@@ -128,36 +128,40 @@ typedef int socklen_t;
 // The following only works for C++
 #ifdef __cplusplus
 namespace aos {
-  template<class T> inline T _min(T a, T b) { return (a > b) ? b : a; }
-  template<class T> inline T _max(T a, T b) { return (a < b) ? b : a; }
-
-  // For wait functions that take a number of milliseconds, kForever indicates
-  // unlimited time.
-  const int kForever = -1;
+template<class T> inline T _min(T a, T b) {
+  return (a > b) ? b : a;
+}
+template<class T> inline T _max(T a, T b) {
+  return (a < b) ? b : a;
 }
 
+// For wait functions that take a number of milliseconds, kForever indicates
+// unlimited time.
+const int kForever = -1;
+}  // namespace aos
+
 #define ALIGNP(p, t) \
-    (reinterpret_cast<uint8*>(((reinterpret_cast<uintptr_t>(p) + \
-    ((t) - 1)) & ~((t) - 1))))
+  (reinterpret_cast<uint8*>(((reinterpret_cast<uintptr_t>(p) + \
+                              ((t) - 1)) & ~((t) - 1))))
 #define IS_ALIGNED(p, a) (!((uintptr_t)(p) & ((a) - 1)))
 
 // Note: UNUSED is also defined in common.h
 #ifndef UNUSED
 #define UNUSED(x) Unused(static_cast<const void*>(&x))
 #define UNUSED2(x, y) Unused(static_cast<const void*>(&x)); \
-    Unused(static_cast<const void*>(&y))
+  Unused(static_cast<const void*>(&y))
 #define UNUSED3(x, y, z) Unused(static_cast<const void*>(&x)); \
-    Unused(static_cast<const void*>(&y)); \
-    Unused(static_cast<const void*>(&z))
+  Unused(static_cast<const void*>(&y)); \
+  Unused(static_cast<const void*>(&z))
 #define UNUSED4(x, y, z, a) Unused(static_cast<const void*>(&x)); \
-    Unused(static_cast<const void*>(&y)); \
-    Unused(static_cast<const void*>(&z)); \
-    Unused(static_cast<const void*>(&a))
+  Unused(static_cast<const void*>(&y)); \
+  Unused(static_cast<const void*>(&z)); \
+  Unused(static_cast<const void*>(&a))
 #define UNUSED5(x, y, z, a, b) Unused(static_cast<const void*>(&x)); \
-    Unused(static_cast<const void*>(&y)); \
-    Unused(static_cast<const void*>(&z)); \
-    Unused(static_cast<const void*>(&a)); \
-    Unused(static_cast<const void*>(&b))
+  Unused(static_cast<const void*>(&y)); \
+  Unused(static_cast<const void*>(&z)); \
+  Unused(static_cast<const void*>(&a)); \
+  Unused(static_cast<const void*>(&b))
 inline void Unused(const void*) {}
 #endif  // UNUSED
 
@@ -167,4 +171,4 @@ inline void Unused(const void*) {}
   static type& name = *new type arguments
 
 #endif  // __cplusplus
-#endif  // ALI_OPENSEARCH_BASE_BASICTYPES_H_
+#endif  // SRC_BASE_BASICTYPES_H_
