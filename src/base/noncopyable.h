@@ -15,24 +15,22 @@
 * limitations under the License.
 */
 
-#include <iostream>
-#include "base/baseinclude.h"
-#include "base/logging.h"
-//#include "easylogging++.h"
+#ifndef SRC_BASE_NONCOPYABLE_H_
+#define SRC_BASE_NONCOPYABLE_H_
 
-//INITIALIZE_EASYLOGGINGPP
 
-int main(int argv, char* argc[]) {
-#ifdef GOOGLE_GLOG_LIBRARY
-  google::InitGoogleLogging(argc[0]);
-  FLAGS_logtostderr = true;
-  FLAGS_stderrthreshold = 0;
-  FLAGS_colorlogtostderr = true;
-#endif
-  std::cout << "Hello World" << std::endl;
+namespace aos {
 
-  LOG_INFO << "Hello World";
-  LOG_WARNING << "Hello World";
-  LOG_ERROR << "Hello World";
-  return 0;
-}
+class noncopyable {
+ protected:
+  noncopyable() {}
+  ~noncopyable() {}
+
+ private:
+  // emphasize the following members are private
+  noncopyable(const noncopyable&);
+  const noncopyable& operator=(const noncopyable&);
+};
+}  // namespace aos
+
+#endif  // SRC_BASE_NONCOPYABLE_H_
