@@ -43,7 +43,6 @@
 #include "base/common.h"
 #include "base/baseinclude.h"
 #include "base/logging.h"
-//#include "easylogging++.h"
 
 //////////////////////////////////////////////////////////////////////
 // Assertions
@@ -76,8 +75,8 @@ void LogAssert(const char* function, const char* file, int line,
     custom_assert_logger_(function, file, line, expression);
   } else {
     LOG_ERROR << file << "(" << line << ")" << ": ASSERT FAILED: "
-                  << expression << " @ " << function;
+              << expression << " @ " << function;
   }
 }
 
-} // namespace aos
+}  // namespace aos

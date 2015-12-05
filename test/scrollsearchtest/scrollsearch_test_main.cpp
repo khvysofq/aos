@@ -17,28 +17,30 @@ int main(int argv, char* argc[]){
     "B1QP39FzM4I9bbudoF2Zxxmxk47fB9");
 
   aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
-  aos::AggregateStanza::Ptr ags = aosp->CreateAggregateStanza(
-    "type_id", "count()");
-  ags->group_key();
+  aos::ConfigStanza::Ptr cs = aosp->CreateConfigStanza();
+  cs->set_hit(1);
 
   aos::Query::Ptr query = aosp->CreateQuery(qa);
-  query->set_aggregate_stanza(ags);
+  query->set_config_stanza(cs);
+
+  aos::Scroll::Ptr scroll = aosp->CreateScroll(2);
+  scroll->scroll_time();
+  scroll->time_type();
+  scroll->scroll_id();
 
   aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
 
-  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  aos::ResValue::Ptr res_value = aosp->ScrollSearch(search_form, scroll);
   if (res_value->IsSucceed()){
+    LOG_INFO << "Search HELLO succeed";
     LOG_INFO << res_value->rep_json().toStyledString();
   }
   else{
-    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+    LOG_ERROR << "Get Error Log HELLO error"
+      << res_value->GetErrorMessage()[0].message;
   }
-  ags->ClearRange();
-  ags->ClearAggFunc();
-  ags->set_max_group(120);
-  ags->set_agg_sampler_step(1);
-  ags->set_agg_sampler_threshold(10);
-  ags->set_agg_filter("id>10");
+  aosp->ScrollSearch(search_form, scroll);
+  LOG_INFO << scroll->scroll_id();
   //getchar();
   //aos::QueryStanza::Ptr d = (a->)
   return 0;

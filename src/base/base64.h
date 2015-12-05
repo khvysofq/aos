@@ -9,17 +9,16 @@
 //* intact.
 //*********************************************************************
 
-#ifndef ALI_OPENSEARCH_BASE64_H__
-#define ALI_OPENSEARCH_BASE64_H__
+#ifndef SRC_BASE_BASE64_H_
+#define SRC_BASE_BASE64_H_
 
 #include <string>
 #include <vector>
 
 namespace aos {
 
-class Base64
-{
-public:
+class Base64 {
+ public:
   enum DecodeOption {
     DO_PARSE_STRICT =  1,  // Parse only base64 characters
     DO_PARSE_WHITE  =  2,  // Parse only base64 and whitespace characters
@@ -76,17 +75,15 @@ public:
     return result;
   }
   static inline bool Decode(const std::string& data, DecodeFlags flags,
-                            std::string* result, size_t* data_used)
-  {
+                            std::string* result, size_t* data_used) {
     return DecodeFromArray(data.data(), data.size(), flags, result, data_used);
   }
   static inline bool Decode(const std::string& data, DecodeFlags flags,
-                            std::vector<char>* result, size_t* data_used)
-  {
+                            std::vector<char>* result, size_t* data_used) {
     return DecodeFromArray(data.data(), data.size(), flags, result, data_used);
   }
 
-private:
+ private:
   static const char Base64Table[];
   static const unsigned char DecodeTable[];
 
@@ -99,6 +96,6 @@ private:
                                       size_t* data_used);
 };
 
-} // namespace aos
+}  // namespace aos
 
-#endif // ALI_OPENSEARCH_BASE64_H__
+#endif  // SRC_BASE_BASE64_H_

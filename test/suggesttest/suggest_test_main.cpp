@@ -21,10 +21,15 @@ int main(int argv, char* argc[]){
   if (res_value->IsSucceed()){
     LOG_INFO << "suggest hit HELLO succeed";
     LOG_INFO << res_value->rep_json().toStyledString();
+    LOG_INFO << res_value->rep_buffer();
+    LOG_INFO << res_value->get_req_id();
+    LOG_INFO << res_value->search_time();
   }
   else{
     LOG_ERROR << "suggest hit HELLO error"
       << res_value->GetErrorMessage()[0].message;
   }
+  aosp->SuggestHit("HELLO",
+    "opensearch", "test_suggest", 100);
   return 0;
 }

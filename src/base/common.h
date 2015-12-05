@@ -28,7 +28,7 @@
 #ifndef ALI_OPENSEARCH_BASE_COMMON_H_  // NOLINT
 #define ALI_OPENSEARCH_BASE_COMMON_H_
 
-#include "basictypes.h"
+#include "base/basictypes.h"
 
 #if defined(_MSC_VER)
 // warning C4355: 'this' : used in base member initializer list

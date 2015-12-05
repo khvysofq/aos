@@ -20,6 +20,12 @@ int main(int argv, char* argc[]){
   aos::DistinctStanza::Ptr ds = aosp->CreateDistinctStanza("type_id");
   ds->set_dist_count(2);
   ds->set_dist_times(10);
+  ds->dist_key();
+  ds->dist_times();
+  ds->dist_count();
+  ds->dist_filter();
+  ds->set_dist_filter("id>0");
+  ds->grade();
 
   aos::Query::Ptr query = aosp->CreateQuery(qa);
   query->set_distinct_stanza(ds);
@@ -33,6 +39,8 @@ int main(int argv, char* argc[]){
   else{
     LOG_ERROR << res_value->GetErrorMessage()[0].message;
   }
+  ds->clear_grade();
+  ds->add_grade(12.0);
   //getchar();
   //aos::QueryStanza::Ptr d = (a->)
   return 0;

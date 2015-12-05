@@ -1,5 +1,4 @@
 platform: linux | osx
-
 analyzers:
  - cpplint: true
    include: ["*.cpp", "*.h", "*.hpp", "*.c"]
@@ -9,4 +8,10 @@ analyzers:
    filters:
    - -whitespace
    - +whitespace/braces
+   - -build/include_what_you_use
+   - -runtime/references
+   - -readability/casting
+   - -build/c++11
+   - -runtime/printf
+   - -runtime/threadsafe_fn
    style: google

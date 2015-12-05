@@ -62,8 +62,6 @@ int main(int argv, char* argc[]){
   LOG_INFO << sc->Express();
   LOG_INFO << sd->Express();
   LOG_INFO << se->Express();
-
-  getchar();
   //aos::QueryStanza::Ptr d = (a->)
   return 0;
 }

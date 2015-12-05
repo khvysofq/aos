@@ -25,5 +25,6 @@ int main(int argv, char* argc[]){
     LOG_ERROR << "Reindex HELLO error"
       << res_value->GetErrorMessage()[0].message;
   }
+  aosp->ReindexApp("HELLO","A");
   return 0;
 }

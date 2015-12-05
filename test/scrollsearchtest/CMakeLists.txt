@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 #########################################################################
 
 # Basic environment setting
-SET(BUILD_PROJECT_NAME "sortstanzatest")
+SET(BUILD_PROJECT_NAME "scrollsearchtest")
 
 #########################################################################
 #INCLUDE_DIRECTORIES(${LIBVZNET_INCLUDE_DIR})
@@ -33,10 +33,10 @@ endforeach()
 #########################################################################
 #Step 3 : Add code source
 SET(SRC_LIST 
-	${CMAKE_CURRENT_SOURCE_DIR}/sortstanza_test_main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/scrollsearch_test_main.cpp
 	)
 SOURCE_GROUP(${BUILD_PROJECT_NAME} FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/sortstanza_test_main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/scrollsearch_test_main.cpp
 )
 #########################################################################
 #Step 4 : Add PROJECT define 

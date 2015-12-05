@@ -43,10 +43,6 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringencode.cpp
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.h
-	#${CMAKE_CURRENT_SOURCE_DIR}/base/stringutils.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
 	${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
@@ -65,6 +61,34 @@ SET(SRC_LIST
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
+	)
+
+SET(CONVERALLS_SRC 
+	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/basedefines.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/noncopyable.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/helpmethods.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/base64.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/base64.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.h
+	${CMAKE_CURRENT_SOURCE_DIR}/base/sha1.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/base/logging.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/common.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/base/common.cpp
+	
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/ali_search.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/public_part.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/res_value.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_value.cpp
+	##${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.h
+	##${CMAKE_CURRENT_SOURCE_DIR}/ali_search/req_task.cpp
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
+	#${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
 
 SOURCE_GROUP(base FILES
@@ -106,7 +130,13 @@ SOURCE_GROUP(ali_search FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ali_search/aoscontext.cpp
 	)
-
+	
+if (COVERALLS)
+	coveralls_setup(
+        "${CONVERALLS_SRC}"
+        ${COVERALLS_UPLOAD}                 
+        "${PROJECT_SOURCE_DIR}/coveralls-cmake/cmake")
+endif()
 #########################################################################
 #Step 4 : Add PROJECT define 
 MESSAGE(STATUS "Step 4 : Add code source")

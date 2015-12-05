@@ -10,3 +10,6 @@
 [submodule "third_part/glog"]
 	path = third_part/glog
 	url = https://github.com/khvysofq/glog.git
+[submodule "coveralls-cmake"]
+	path = coveralls-cmake
+	url = https://github.com/JoakimSoderberg/coveralls-cmake.git

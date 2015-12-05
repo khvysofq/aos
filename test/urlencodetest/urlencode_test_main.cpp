@@ -3,7 +3,6 @@
 #include "base/helpmethods.h"
 #include "base/sha1.h"
 #include <memory.h>
-#include "base/base64.h"
 #include "base/logging.h"
 
 //INITIALIZE_EASYLOGGINGPP
@@ -18,7 +17,6 @@ const std::string SIGN_STR = "GET&%2F&AccessKeyId%3Dtestid%26SignatureMethod"
 
 const std::string KEY = "testsecret&";
 
-const std::string B64_STR = "fxGidmIYSsx2AMa8onxuavOijuE=";
 
 int main(int argv, char* argc[]){
 
@@ -39,12 +37,6 @@ int main(int argv, char* argc[]){
   aos::HelpMethos::HmacSha1ToBase64(KEY, SIGN_STR, result);
   LOG_INFO << result;
 
-  //aos::Base64::DecodeFromArray(B64_STR.c_str(), B64_STR.size(),
-  //  aos::Base64::DecodeOption::DO_PARSE_STRICT, &result, &data_used);
-  //const char *result_data = result.c_str();
-  //for (std::size_t i = 0; i < result.size(); i++){
-  //  printf("%x", (unsigned char)result_data[i]);
-  //}
-  //printf("\n");
+
   return 0;
 }

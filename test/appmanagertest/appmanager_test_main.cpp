@@ -17,16 +17,16 @@ int main(int argv, char* argc[]){
     "B1QP39FzM4I9bbudoF2Zxxmxk47fB9");
   // Create app
   aos::ResValue::Ptr crs_value =
-    aosp->CreateNewApp("HELLO", aos::APP_TEMPLATE_BUILTIN_NEWS);
+    aosp->CreateNewApp("HELLO_TEST", aos::APP_TEMPLATE_BUILTIN_NEWS);
   if (crs_value->IsSucceed()){
-    LOG_INFO << "Create app succeed " << "HELLO";
+    LOG_INFO << "Create app succeed " << "HELLO_TEST";
   }
   else{
     LOG_ERROR << "Create app failed " 
       << crs_value->GetErrorMessage()[0].message;
   }
   // Get app status
-  aos::ResValue::Ptr grs_value = aosp->GetAppStastus("HELLO");
+  aos::ResValue::Ptr grs_value = aosp->GetAppStastus("HELLO_TEST");
   if (grs_value->IsSucceed()){
     LOG_INFO << "Get app status succeed " << "HELLO";
   }
@@ -35,14 +35,22 @@ int main(int argv, char* argc[]){
       << grs_value->GetErrorMessage()[0].message;
   }
   // Delete app
-  //aos::ResValue::Ptr drs_value = aosp->DeleteApp("HELLO");
-  //if (drs_value->IsSucceed()){
-  //  LOG_INFO << "Delete app succeed " << "HELLO";
-  //}
-  //else{
-  //  LOG_ERROR << "Delete app failed " 
-  //    << drs_value->GetErrorMessage()[0].message;
-  //}
-
+  aos::ResValue::Ptr drs_value = aosp->DeleteApp("HELLO_TEST");
+  if (drs_value->IsSucceed()){
+    LOG_INFO << "Delete app succeed " << "HELLO";
+  }
+  else{
+    LOG_ERROR << "Delete app failed " 
+      << drs_value->GetErrorMessage()[0].message;
+  }
+  // Delete warong app
+  aos::ResValue::Ptr drsw_value = aosp->DeleteApp("HELLO_TEST2");
+  if (drsw_value->IsSucceed()){
+    LOG_INFO << "Delete app succeed " << "HELLO_TEST2";
+  }
+  else{
+    LOG_ERROR << "Delete app failed "
+      << drsw_value->GetErrorMessage()[0].message;
+  }
   return 0;
 }
