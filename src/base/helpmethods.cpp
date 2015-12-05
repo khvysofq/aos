@@ -16,12 +16,12 @@
 */
 
 #include "base/helpmethods.h"
-#include <string>
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string>
 #include "base/sha1.h"
 #include "base/base64.h"
 #include "base/timeutils.h"
@@ -79,7 +79,7 @@ const std::string HelpMethos::GetRandNumString(int size) {
 }
 
 uint32 HelpMethos::GetUnixTimeStamp() {
-  return (uint32)(TimeNanos() / 1000);
+  return static_cast<uint32>(TimeNanos() / 1000);
 }
 
 static const char HEX[] = "0123456789ABCDEF";
@@ -149,7 +149,7 @@ const std::string HelpMethos::HttpMethodToStr(HttpMethod hm) {
 
 void *memxor(void * dest, const void * src, size_t n) {
   char const *s = (const char *)src;
-  char *d = (char *)dest;
+  char *d = reinterpret_cast<char *>(dest);
 
   for (; n > 0; n--)
     *d++ ^= *s++;

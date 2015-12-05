@@ -62,19 +62,19 @@ class PushItem :public noncopyable, public BaseReqValue {
   }
 
   // JSON
-  bool AddField(const std::string &key, Json::Value &value);  // NOLINT
+  bool AddField(const std::string &key, const Json::Value &value);
   // TEXT
-  bool AddField(const std::string &key, const std::string &value);  // NOLINT
+  bool AddField(const std::string &key, const std::string &value);
   // TEXT ARRAY
-  bool AddField(const std::string &key, std::vector<std::string> &value);  // NOLINT
+  bool AddField(const std::string &key, const std::vector<std::string> &value);
   // INT
   bool AddField(const std::string &key, int value);
   // INT ARRAY
-  bool AddField(const std::string &key, std::vector<int> &value);  // NOLINT
+  bool AddField(const std::string &key, const std::vector<int> &value);
   // FLOAT
   bool AddField(const std::string &key, double value);
   // FLOAT ARRAY
-  bool AddField(const std::string &key, std::vector<float> &value);  // NOLINT
+  bool AddField(const std::string &key, std::vector<float> &value);
 
  private:
   friend class PushIndexDocTask;

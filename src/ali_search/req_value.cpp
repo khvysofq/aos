@@ -45,7 +45,7 @@ const std::string PushItem::Express() {
   return JsonExpress().toStyledString();
 }
 
-bool PushItem::AddField(const std::string &key, Json::Value &value) {
+bool PushItem::AddField(const std::string &key, const Json::Value &value) {
   try {
     fields_json_[key] = value;
   } catch (std::exception &e) {
@@ -68,7 +68,7 @@ bool PushItem::AddField(const std::string &key, const std::string &value) {
 
 // TEXT ARRAY
 bool PushItem::AddField(const std::string &key,
-                        std::vector<std::string> &value) {
+                        const std::vector<std::string> &value) {
   try {
     Json::Value json_array;
     for (std::size_t i = 0; i < value.size(); i++) {
@@ -94,7 +94,7 @@ bool PushItem::AddField(const std::string &key, int value) {
 }
 
 // INT ARRAY
-bool PushItem::AddField(const std::string &key, std::vector<int> &value) {
+bool PushItem::AddField(const std::string &key, const std::vector<int> &value) {
   try {
     Json::Value json_array;
     for (std::size_t i = 0; i < value.size(); i++) {

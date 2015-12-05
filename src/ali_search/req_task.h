@@ -41,18 +41,18 @@ class BaseReqTask {
   virtual ~BaseReqTask();
 
  protected:
-  virtual void BuildReqUrl(std::string &result);
-  virtual void BuildRequestParames(std::string &parames);
-  virtual bool BuildPostData(std::string &post_data) {
+   virtual void BuildReqUrl(std::string &result); // NOLINT
+   virtual void BuildRequestParames(std::string &parames); // NOLINT
+   virtual bool BuildPostData(std::string &post_data) { // NOLINT
     return false;
   }
 
   virtual bool AddKeyValue(const std::string &key, const std::string &value);
-  virtual void AddApiUrl(std::string &result) = 0;
+  virtual void AddApiUrl(std::string &result) = 0; // NOLINT
   virtual void AddPrivateKeyValues() = 0;
   virtual ResValue *GetResBuffer() = 0;
 
-  void GeneratorCCQS(std::string &ccqs);
+  void GeneratorCCQS(std::string &ccqs); // NOLINT
   const std::string GeneratorSignature(const std::string &cqs);
 
  protected:
@@ -76,7 +76,7 @@ class CreateAppTask : public BaseReqTask, public noncopyable {
                          const std::string &app_name,
                          const std::string &template_name);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -98,7 +98,7 @@ class GetAppStatusTask : public BaseReqTask, public noncopyable {
                             PublicPartManager::Ptr ppmp,
                             const std::string &app_name);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -119,7 +119,7 @@ class DeleteAppTask : public BaseReqTask, public noncopyable {
                          PublicPartManager::Ptr ppmp,
                          const std::string &app_name);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -151,9 +151,9 @@ class PushIndexDocTask : public BaseReqTask, public noncopyable {
                             const std::string &table_name,
                             PushForm::Ptr push_form);
 
-  virtual bool BuildPostData(std::string &post_data);
+  virtual bool BuildPostData(std::string &post_data); // NOLINT
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -179,7 +179,7 @@ class SuggestTask : public BaseReqTask, public noncopyable {
                        const std::string &suggest_name,
                        int hit_count);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -204,7 +204,7 @@ class ReindexTask : public BaseReqTask, public noncopyable {
                        const std::string &operate,
                        const std::string &table_name);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
@@ -231,7 +231,7 @@ class GetErrorLogTask : public BaseReqTask, public noncopyable {
                            const std::string &app_name,
                            int page, int page_size, SortMode sort_mode);
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();

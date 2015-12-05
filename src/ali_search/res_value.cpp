@@ -86,8 +86,10 @@ bool ResValue::ParseErrorMessage(Json::Value &error_res) {
   }
   for (std::size_t i = 0; i < error_res.size(); i++) {
     AosError aos_error;
-    aos_error.error_code = error_res[(int)i][JSON_ERRORS_CODE].asUInt();
-    aos_error.message = error_res[(int)i][JSON_ERRORS_MESSAGE].asString();
+    aos_error.error_code = 
+      error_res[static_cast<int>(i)][JSON_ERRORS_CODE].asUInt();
+    aos_error.message = 
+      error_res[static_cast<int>(i)][JSON_ERRORS_MESSAGE].asString();
     aos_errors_.push_back(aos_error);
     LOG_ERROR << "[ " << aos_error.error_code << " ] "
               << aos_error.message;
