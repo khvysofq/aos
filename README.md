@@ -2,11 +2,64 @@
 [![Coverage Status](https://coveralls.io/repos/khvysofq/aos/badge.svg?branch=master&service=github)](https://coveralls.io/github/khvysofq/aos?branch=master)
 # aliyun opensearch c++ sdk
 
----
-English Guide
----
----
-[TOC]
+* [Introduction](#introduction)
+  * [Current project status](#current-project-status)
+* [Requirement](#requirement)
+* [Install](#install)
+  * [Download the srouce code](#download-the-srouce-code)
+  * [Build on windows](#build-on-windows)
+    * [Windows User Noticed](#windows-user-noticed)
+  * [Build on Linux, OSX or other like system](#build-on-linux-osx-or-other-like-system)
+* [Usage](#usage)
+  * [The base context initalize](#the-base-context-initalize)
+    * [The Return value](#the-return-value)
+* [Application Manager](#application-manager)
+  * [Create a application](#create-a-application)
+  * [Get the application status](#get-the-application-status)
+  * [Delete a application](#delete-a-application)
+  * [A full example](#a-full-example)
+* [Push index document](#push-index-document)
+* [suggest operator](#suggest-operator)
+* [Index rebuild](#index-rebuild)
+* [Get error logging file](#get-error-logging-file)
+* [About search](#about-search)
+  * [The Stanzas](#the-stanzas)
+  * [Query Stanza](#query-stanza)
+  * [Config Stanza](#config-stanza)
+  * [Filter Stanza](#filter-stanza)
+  * [Sort Stanza](#sort-stanza)
+  * [Aggregate Stanza](#aggregate-stanza)
+  * [Distinct Stanza](#distinct-stanza)
+  * [Kvpairs Stanza](#kvpairs-stanza)
+  * [Scroll Search](#scroll-search)
+* [How to Replace the logging system](#how-to-replace-the-logging-system)
+* [当前状态](#当前状态)
+* [编译配置](#编译配置)
+  * [下载工程](#下载工程)
+  * [Windows平台上编译并使用](#windows平台上编译并使用)
+  * [Linux平台上编译安装](#linux平台上编译安装)
+* [简介](#简介)
+* [应用管理操作](#应用管理操作)
+  * [创建一个应用](#创建一个应用)
+  * [得到应用的信息](#得到应用的信息)
+  * [删除应用](#删除应用)
+* [上传文档](#上传文档)
+* [下拉提示](#下拉提示)
+* [索引重建](#索引重建)
+* [得到错误日志](#得到错误日志)
+* [搜索相关](#搜索相关)
+  * [接口操作和简单使用](#接口操作和简单使用)
+* [搜索子句](#搜索子句)
+  * [Query子句](#query子句)
+  * [Config子句](#config子句)
+  * [Filter子句](#filter子句)
+  * [sort子句](#sort子句)
+  * [aggregate子句](#aggregate子句)
+  * [distinct子句](#distinct子句)
+  * [kvpair子句](#kvpair子句)
+  * [ScrollSearch](#scrollsearch)
+* [如何切换或者去掉日志库](#如何切换或者去掉日志库)
+* [license](#license)
 
 ## Introduction
 
@@ -17,7 +70,7 @@ This project implements aliyun opensearch api by c++.
 - [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") build pass. and build succeed on windows too.
 - [coveralls.io](https://coveralls.io/github/khvysofq/aos?branch=master") unit test coverage status 95%
 - valgrind memcheck succeed with all test programms. you can test by use scrpyt `git_path/aliyun_opensearch/valgrind_test/valgrind_test.sh`
-- [linthub.io](https://linthub.io/khvysofq/aos/a7af346f3e031fee72d30a00b525de4ec1676f9d) code style check succeed. but the linthub.io cann't disable some ugly style check as same as [cpplint.py](https://pypi.python.org/pypi/cpplint"). you can used cpplint check the main code style by the filter parameters `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`
+- [linthub.io](https://linthub.io/khvysofq/aos/cac6c646118722578885588e38c2b96a64bb1db5) code style check succeed. but the linthub.io cann't disable some ugly style check as same as [cpplint.py](https://pypi.python.org/pypi/cpplint"). you can used cpplint check the main code style by the filter parameters `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`
 
 ## Requirement
 
@@ -185,11 +238,11 @@ All of the interface that action with aliyun opensearch server will result a `Re
 
 Next, we are going to show you how to use this objects.
 
-### Application Manager
+## Application Manager
 
 Application manager has three functions in `aos::AliOpenSearch`.
 
-#### Create a application
+### Create a application
 
 ```c++
     //const char APP_TEMPLATE_BUILTIN_NEWS[] = "builtin_news";
@@ -204,19 +257,19 @@ Application manager has three functions in `aos::AliOpenSearch`.
 - `app_name`, is the name that you want to created.
 - `template_name`, is the template name that you want to created application. by defualt, aliyun opensearch   officials provided fours built-in templates. 
 
-#### Get the application status
+### Get the application status
 
 ```c++
     ResValue::Ptr GetAppStastus(const std::string &app_name);
 ```
 
-#### Delete a application
+### Delete a application
 
 ```c++
     ResValue::Ptr DeleteApp(const std::string &app_name);
 ```
 
-#### A full example
+### A full example
 
 
 ```c++
@@ -267,7 +320,7 @@ int main(int argv, char* argc[]){
 
 This example first create a application named `HELLO` by `aos::APP_TEMPLATE_BUILTIN_NEWS` built-in teample, and second get the `HELLO` status, and then delete the `HELLO` application.
 
-### Push index document
+## Push index document
 
 For push operation, you'd be better off with [apliyun push index document reles](http://help.aliyun.com/document_detail/opensearch/api-reference/api-interface/data-manager.html "push index doument")
 
@@ -337,7 +390,7 @@ Next, here is an example of push a index document to server.
 
 The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
 
-### suggest operator
+## suggest operator
 
 Suggest hit is a frequently used in the realy search world. belown is the relevant interface
 
@@ -369,7 +422,7 @@ To used this interfce you'd be better off with [suggest hit document](http://hel
 
 The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
 
-### Index rebuild
+## Index rebuild
 
 ```c++
     ResValue::Ptr ReindexApp(const std::string &app_name,
@@ -393,7 +446,7 @@ To used this interfce you'd be better off with [Index rebuild document](http://h
 
 The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
 
-### Get error logging file
+## Get error logging file
 
 
 ```c++
@@ -419,7 +472,7 @@ To used this interfce you'd be better off with [Get error logging file document]
   }
 ```
 
-### About search
+## About search
 
 The search operator is part of the core of the aliyun opensarch. `libali_opensearch` includes a set of easy-to-use interfaces, to avoid making mistakes and save the time of users.
 
@@ -479,7 +532,7 @@ Next, here is an example of do a basic search.
 In order to obtain a better search result, we create an application that named `HELLO` with `aos::APP_TEMPLATE_BUILTIN_NEWS` templete, and insert the aliyun openserch official data.
 
 
-#### The Stanzas
+### The Stanzas
 
 Next, we are going to show the seven stanza. here is the interface that to create those stanzas.
 
@@ -1024,18 +1077,12 @@ We are used logging indirectly by using the macro definition. so you can replace
 cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
 ```
 
-
----
-中文教程
----
----
-
 ## 当前状态
 
 - [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") 已经编译通过，同时也在Windows平台上面编译通过。
 - [coveralls.io](https://coveralls.io/github/khvysofq/aos?branch=master")，单元测试覆盖率达到95%
 - 在Ubuntu 64平台下，使用valgrind对所有的单元测试程序进行内存检查通过。您可以使用 `git_path/aliyun_opensearch/valgrind_test/valgrind_test.sh`这个脚本文件对所有的单元测试进行验证。
-- [linthub.io](https://linthub.io/khvysofq/aos/a7af346f3e031fee72d30a00b525de4ec1676f9d") 代码风格检查完成。linthub对于C++的代码风格检查使用的是`cpplint`，但是却不支持一些过滤器，比如禁止对C++11代码风格的警告，因此有一些代码风格没有完全遵守linthub.io的检查结果。不过可以在本地进行下载 [cpplint.py](https://pypi.python.org/pypi/cpplint") 进行代码风格检查，同时使用如下的过滤参数 `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`对`git_path/aliyun_opensearch/src`目录下的代码进行风格检查。
+- [linthub.io](https://linthub.io/khvysofq/aos/cac6c646118722578885588e38c2b96a64bb1db5) 代码风格检查完成。linthub对于C++的代码风格检查使用的是`cpplint`，但是却不支持一些过滤器，比如禁止对C++11代码风格的警告，因此有一些代码风格被注释了，并没有完全遵守linthub.io的检查结果。不过可以在本地进行下载 [cpplint.py](https://pypi.python.org/pypi/cpplint") 进行代码风格检查，同时使用如下的过滤参数 `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`对`git_path/aliyun_opensearch/src`目录下的代码进行风格检查。
 
 
 ## 编译配置
