@@ -252,7 +252,7 @@ class SearchTask : public BaseReqTask, public noncopyable {
 
   virtual ResValue::Ptr SyncStart();
 
-  virtual void AddApiUrl(std::string &result);
+  virtual void AddApiUrl(std::string &result); // NOLINT
   virtual void AddPrivateKeyValues();
   virtual ResValue *GetResBuffer() {
     return res_value_.get();
