@@ -20,6 +20,8 @@
 
 #include <set>
 #include <vector>
+#include <string>
+#include <map>
 #include "base/baseinclude.h"
 #include "base/basedefines.h"
 #include "json/json.h"
@@ -60,19 +62,19 @@ class PushItem :public noncopyable, public BaseReqValue {
   }
 
   // JSON
-  bool AddField(const std::string &key, Json::Value &value);
+  bool AddField(const std::string &key, Json::Value &value);  // NOLINT
   // TEXT
-  bool AddField(const std::string &key, const std::string &value);
+  bool AddField(const std::string &key, const std::string &value);  // NOLINT
   // TEXT ARRAY
-  bool AddField(const std::string &key, std::vector<std::string> &value);
+  bool AddField(const std::string &key, std::vector<std::string> &value);  // NOLINT
   // INT
   bool AddField(const std::string &key, int value);
   // INT ARRAY
-  bool AddField(const std::string &key, std::vector<int> &value);
+  bool AddField(const std::string &key, std::vector<int> &value);  // NOLINT
   // FLOAT
   bool AddField(const std::string &key, double value);
   // FLOAT ARRAY
-  bool AddField(const std::string &key, std::vector<float> &value);
+  bool AddField(const std::string &key, std::vector<float> &value);  // NOLINT
 
  private:
   friend class PushIndexDocTask;
@@ -465,7 +467,7 @@ class Query : public noncopyable {
 
  private:
   explicit Query(QueryStanza::Ptr query_stanza);
-  void AddKeyExpress(std::string &express, const std::string &key,
+  void AddKeyExpress(std::string &express, const std::string &key,  // NOLINT
                      const std::string &value);
   friend class AliOpenSearch;
  private:
@@ -484,7 +486,7 @@ class Summary : public noncopyable, public BaseReqValue {
   virtual const std::string Express();
   virtual bool IsValue();
 
-  bool ToSummaryString(std::string &summary);
+  bool ToSummaryString(std::string &summary);  // NOLINT
 
   bool IsInvalueSummary() {
     return summary_field_.empty();
@@ -536,8 +538,8 @@ class Summary : public noncopyable, public BaseReqValue {
           const std::string &summary_ellipsis,
           int summary_snipped);
 
-  void AddKeyValueToString(std::string &str,
-                           const std::string &key, const std::string &value);
+  void AddKeyValueToString(std::string &str,  // NOLINT
+    const std::string &key, const std::string &value);  // NOLINT
   friend class AliOpenSearch;
  private:
   std::string summary_field_;
@@ -633,15 +635,15 @@ class SearchForm : public noncopyable {
 
  private:
   SearchForm(Query::Ptr query, const std::string &app_name);
-  void AddExpress(std::string &express,
-                  const std::string &key, const std::string value);
+  void AddExpress(std::string &express,  // NOLINT
+    const std::string &key, const std::string value);  // NOLINT
   const std::string SearchAppNameExpress();
   const std::string FetchFieldsExpress();
   const std::string QueryProtoExpress();
 
-  bool AddKeyValue(std::map<std::string, std::string> &kvs,
-                   const std::string &key, const std::string &value);
-  bool UpdateKeyValue(std::map<std::string, std::string> &kvs);
+  bool AddKeyValue(std::map<std::string, std::string> &kvs,  // NOLINT
+    const std::string &key, const std::string &value);  // NOLINT
+  bool UpdateKeyValue(std::map<std::string, std::string> &kvs);  // NOLINT
   friend class SearchTask;
   friend class AliOpenSearch;
  private:
@@ -703,8 +705,8 @@ class Scroll : public noncopyable {
          const std::string &search_type = SCROLL_TYPE_SCAN,
          const std::string &scroll_id = "");
 
-  void HandleResultMessage(Json::Value &result_json);
-  bool UpdateKeyValue(std::map<std::string, std::string> &kvs);
+  void HandleResultMessage(Json::Value &result_json);  // NOLINT
+  bool UpdateKeyValue(std::map<std::string, std::string> &kvs);  // NOLINT
   const std::string GetScrollTime();
   char ScrollTimeTypeToString(ScrollTimeType time_type);
 
