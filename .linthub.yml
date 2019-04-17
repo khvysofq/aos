@@ -1,10 +1,5 @@
-platform: linux | osx
 analyzers:
  - cpplint: true
-   include: ["*.cpp", "*.h", "*.hpp", "*.c"]
-   path: 
-   - ./src/base
-   - ./src/ali_search
    filters: 
    - -whitespace
    - +whitespace/braces
@@ -12,7 +7,6 @@ analyzers:
    - -runtime/references
    - -readability/casting
    - -build/c++11
-   - -runtime/printf-
+   - -runtime/printf
    - -runtime/threadsafe_fn
-   extensions: cpp,h
    style: google

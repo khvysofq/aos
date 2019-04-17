@@ -2,6 +2,1089 @@
 [![Coverage Status](https://coveralls.io/repos/khvysofq/aos/badge.svg?branch=master&service=github)](https://coveralls.io/github/khvysofq/aos?branch=master)
 # aliyun opensearch c++ sdk
 
+* [Introduction](#introduction)
+  * [Current project status](#current-project-status)
+* [Requirement](#requirement)
+* [Install](#install)
+  * [Download the srouce code](#download-the-srouce-code)
+  * [Build on windows](#build-on-windows)
+    * [Windows User Noticed](#windows-user-noticed)
+  * [Build on Linux, OSX or other like system](#build-on-linux-osx-or-other-like-system)
+* [Usage](#usage)
+  * [The base context initalize](#the-base-context-initalize)
+    * [The Return value](#the-return-value)
+* [Application Manager](#application-manager)
+  * [Create a application](#create-a-application)
+  * [Get the application status](#get-the-application-status)
+  * [Delete a application](#delete-a-application)
+  * [A full example](#a-full-example)
+* [Push index document](#push-index-document)
+* [suggest operator](#suggest-operator)
+* [Index rebuild](#index-rebuild)
+* [Get error logging file](#get-error-logging-file)
+* [About search](#about-search)
+  * [The Stanzas](#the-stanzas)
+  * [Query Stanza](#query-stanza)
+  * [Config Stanza](#config-stanza)
+  * [Filter Stanza](#filter-stanza)
+  * [Sort Stanza](#sort-stanza)
+  * [Aggregate Stanza](#aggregate-stanza)
+  * [Distinct Stanza](#distinct-stanza)
+  * [Kvpairs Stanza](#kvpairs-stanza)
+  * [Scroll Search](#scroll-search)
+* [How to Replace the logging system](#how-to-replace-the-logging-system)
+* [当前状态](#当前状态)
+* [编译配置](#编译配置)
+  * [下载工程](#下载工程)
+  * [Windows平台上编译并使用](#windows平台上编译并使用)
+  * [Linux平台上编译安装](#linux平台上编译安装)
+* [简介](#简介)
+* [应用管理操作](#应用管理操作)
+  * [创建一个应用](#创建一个应用)
+  * [得到应用的信息](#得到应用的信息)
+  * [删除应用](#删除应用)
+* [上传文档](#上传文档)
+* [下拉提示](#下拉提示)
+* [索引重建](#索引重建)
+* [得到错误日志](#得到错误日志)
+* [搜索相关](#搜索相关)
+  * [接口操作和简单使用](#接口操作和简单使用)
+* [搜索子句](#搜索子句)
+  * [Query子句](#query子句)
+  * [Config子句](#config子句)
+  * [Filter子句](#filter子句)
+  * [sort子句](#sort子句)
+  * [aggregate子句](#aggregate子句)
+  * [distinct子句](#distinct子句)
+  * [kvpair子句](#kvpair子句)
+  * [ScrollSearch](#scrollsearch)
+* [如何切换或者去掉日志库](#如何切换或者去掉日志库)
+* [license](#license)
+
+## Introduction
+
+This project implements aliyun opensearch api by c++. 
+
+### Current project status
+
+- [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") build pass. and build succeed on windows too.
+- [coveralls.io](https://coveralls.io/github/khvysofq/aos?branch=master") unit test coverage status 95%
+- valgrind memcheck succeed with all test programms. you can test by use scrpyt `git_path/aliyun_opensearch/valgrind_test/valgrind_test.sh`
+- [linthub.io](https://linthub.io/khvysofq/aos/cac6c646118722578885588e38c2b96a64bb1db5) code style check succeed. but the linthub.io cann't disable some ugly style check as same as [cpplint.py](https://pypi.python.org/pypi/cpplint"). you can used cpplint check the main code style by the filter parameters `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`
+
+## Requirement
+
+- `git`, make sure you are already installed `git`
+- `cmake`, make sure you are already installed `cmake 2.8` or higher, we recommend using `cmake 3.0`. make sure you are already export the environment variable `cmake`, and call `cmake` in the bash available.
+- This project used the c++ 11 features, then for compiler, `Vistual studio 2013` or higher, `GCC 4.6` or higher, `Clang++ 3.3` or higher is recommend.
+
+## Install
+
+### Download the srouce code
+
+```bash
+	// download the soruce code
+	git clone https://git.oschina.net/guangleihe/aliyun_opensearch.git
+	// enter the project file
+	cd aliyun_opensearch
+	// update the third part library
+	git submodule update --init --recursive
+	// create a build file, after bulid
+	mkdir build
+	// enter the build file
+	cd build
+	// run the cmake to generator the project files
+```
+
+We define the current git clone path is `git_path`。After executing the above cmmand you should in file `git_path/aliyun_opensearch/build`. 
+
+Exeute the command below to generate a Makefile on linux like system or Visutal studio project file on windows.
+
+```bash
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DWITH_GFLAGS=OFF -DHTTP_ONLY=ON
+```
+
+If the command run into trouble. It may well have `glog` error, delete or all the cmake genarete file (in the `git_path/aliyun_opensearch/build`) and run the following command.
+
+```c++
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
+```
+
+The difference between for those who first command and second command is disable `-DWITH_GFLAGS=OFF` in first and add flag `-DUSE_GLOG=OFF`. 
+
+The tutorial on how to easy change the logging system at the end of this post.
+
+### Build on windows
+
+The cmake will generate a `aliyun_opensearch.sln` project file on windows, open it by vistual studio 2013 or higher.
+
+We've already specified the build order: `curl`、`jsoncpp`、`glog` (if enable)、 `libali_opensearch` and then other test programs. But the vistual studio build by multi-threaded. Therefore, somethimes, the test programs build complete but the dependent library not. they failue to found the dependents. Rebuild all will solve this problem.
+
+The four library files generated after build succeed in path `git_path/aliyun_opensearch/lib/win`:
+
+- `glog.lib`, build by google logging system
+- `jsoncpp.lib`, build by jsoncpp libray
+- `libali_opensearch.lib`, the core libray
+- `libcurl_imp.lib`, build by `libcurl`
+
+The `libcurl` is a Dynamic-Link Library, you can find the `libcurl.dll` in `git_path/aliyun_opensearch/bin/win`.
+
+#### Windows User Noticed
+
+1. By default all of the library and test programms building by setting the `Runtime Library` flag with `Multi-threaded Debug (/MTd)` on debug, and with `Multi-threaded (/MT)` on release. You can change the flag as you need, but regenerate project file by cmake will reset this flag to `Multi-threaded` again.
+2. If you decide to use `glog` and `glog` build succeed, You'd better add `GOOGLE_GLOG_LIBRARY` and `GOOGLE_GLOG_DLL_DECL=` define to you project.
+
+To build you own applications:
+1. Add the include path `git_path/aliyun_opensearch/src` with `libali_opensearch` and `git_path/aliyun_opensearch/third_part/jsoncpp/include` with `jsoncpp`
+2. And include the header file `ali_search/ali_search.h`
+3. Link the library: `glog.lib`、`jsoncpp.lib`、`libcurl_imp.lib`、`libali_opensearch.lib`.
+
+If you decide to use `glog`, you should add include path `git_path/aliyun_opensearch/build/third_part/glog` and `git_path/aliyun_opensearch/third_partglog/src`. And initialize glog at the start of the applications by below code
+
+> 
+```c++
+	int main(int argc, char* argv[]){
+	  google::InitGoogleLogging(argv[0]);
+	  FLAGS_logtostderr = true;
+	  FLAGS_stderrthreshold = 0;
+	  FLAGS_colorlogtostderr = true;
+	}
+```
+
+### Build on Linux, OSX or other like system
+
+The cmake will generate a `Makefile` on linux, just use `make` command to build all of the projects. By defualt all off the library will be found in path `git_path/aliyun_opensearch/lib/unix`:
+
+- `glog.a`, build by google logging system
+- `jsoncpp.a`, build by jsoncpp libray
+- `libali_opensearch.a`, the core libray
+
+The `libcurl` is a Dynamic-Link Library, you can find the `libcurl.so` on linux or `libcurl.dylib` on osx system.
+
+To build you own applications:
+1. Add the include path `git_path/aliyun_opensearch/src` with `libali_opensearch` and `git_path/aliyun_opensearch/third_part/jsoncpp/include` with `jsoncpp`
+2. And include the header file `ali_search/ali_search.h`
+3. Link the library: `glog.a`、`jsoncpp.a`、`libcurl.so` on linux or `libcurl.dylib` on osx、`libali_opensearch.lib`.
+
+If you decide to use `glog`, you should add include path `git_path/aliyun_opensearch/build/third_part/glog` and `git_path/aliyun_opensearch/third_partglog/src`. And initialize glog at the start of the applications by below code
+
+> 
+```c++
+	int main(int argc, char* argv[]){
+	  google::InitGoogleLogging(argv[0]);
+	  FLAGS_logtostderr = true;
+	  FLAGS_stderrthreshold = 0;
+	  FLAGS_colorlogtostderr = true;
+	}
+```
+
+## Usage
+
+`libali_opensearch` used many C++ 11 features, especially used `std::shared_ptr` to manager all of the class object lifecycle. so you sould not worray about the memory leaks. All of class object create indirectly, and only create a `std::shared_ptr` object.
+
+### The base context initalize
+
+`libali_opensearch` used the `libcurl` to interactions with the aliyun opensearch server. Therefore, as a firest step, you'll create a `aos::AosGlobalContext::Ptr` object and intialize by the following code.
+
+```c++
+  aos::AosGlobalContext::Ptr agcp_context = 
+	 aos::AosGlobalContext::InitAosGlobalContext();
+```
+
+The `aos::AosGlobalContext` encapsulates the `libcurl`.
+
+The second step, you need to create a `aos::AliOpenSearch::Ptr` object by following code.
+
+```c++
+    static AliOpenSearch::Ptr CreateAliOpenSearch(
+      AosGlobalContext::Ptr ag_context,
+      const std::string &api_domain,
+      const std::string &access_key_id,
+      const std::string &access_key_secret);
+```
+
+`aos::AliOpenSearch` holds main basic information interactive between the client and aliyun opensearch server. 
+
+`aos::AliOpenSearch` is a factory class. It can create as many objects as you need to build a search request.
+
+To get the application url and `access_key_id`、`access_key_secret` read the aliyun opensearch api document.
+
+#### The Return value
+
+All of the interface that action with aliyun opensearch server will result a `ResValue::Ptr` value. Is defines by following code:
+
+```c++
+
+  class ResValue{
+  public:
+    // public interface
+    std::string &rep_buffer(){ return rep_buffer_; }
+    Json::Value &rep_json() { return json_res_; }
+    bool IsSucceed() { return status_; }
+    const AosErrors &GetErrorMessage() const{ return aos_errors_; }
+    const std::string &get_req_id(){ return req_id_; }
+    double search_time(){ return search_time_; }
+
+  private:
+	// ... ...
+  };
+```
+- `rep_buffer()`, Save the raw result data. You should not used it unless in the absence of exceptional circumstances.
+- `rep_json()`, Parsed by `jsoncpp`, preference for using this data.
+- `IsSucceed()`, return true, if the request was succeessful, else return false.
+- `AosErrors()`, It save the error message, if the requst was unsucceessful, you can getting more information by this interface. **The errors is an array**.
+- `get_req_id()`, Under normal conditions, all of the response has a req_id.
+- `search_time()`, for search request, there has a search time that indication the search spends time.
+
+Next, we are going to show you how to use this objects.
+
+## Application Manager
+
+Application manager has three functions in `aos::AliOpenSearch`.
+
+### Create a application
+
+```c++
+    //const char APP_TEMPLATE_BUILTIN_NEWS[] = "builtin_news";
+    //const char APP_TEMPLATE_BUILTIN_NOVEL[] = "builtin_novel";
+    //const char APP_TEMPLATE_BUILTIN_DOWNLOAD[] = "builtin_download";
+    //const char APP_TEMPLATE_BUILTIN_BBS[] = "bbs";
+
+    ResValue::Ptr CreateNewApp(const std::string &app_name, 
+      const std::string &template_name);
+```
+
+- `app_name`, is the name that you want to created.
+- `template_name`, is the template name that you want to created application. by defualt, aliyun opensearch   officials provided fours built-in templates. 
+
+### Get the application status
+
+```c++
+    ResValue::Ptr GetAppStastus(const std::string &app_name);
+```
+
+### Delete a application
+
+```c++
+    ResValue::Ptr DeleteApp(const std::string &app_name);
+```
+
+### A full example
+
+
+```c++
+#include "ali_search/ali_search.h"
+
+int main(int argv, char* argc[]){
+
+  aos::AosGlobalContext::Ptr agcp_context =
+    aos::AosGlobalContext::InitAosGlobalContext();
+
+  aos::AliOpenSearch::Ptr aosp = aos::AliOpenSearch::CreateAliOpenSearch(
+    agcp_context,
+    "http://opensearch*****.aliyuncs.com",
+    "6******L",
+    "B1********7fB9");
+  // Create app
+  aos::ResValue::Ptr crs_value =
+    aosp->CreateNewApp("HELLO", aos::APP_TEMPLATE_BUILTIN_NEWS);
+  if (crs_value->IsSucceed()){
+    LOG_INFO << "Create app succeed " << "HELLO";
+  }
+  else{
+    LOG_ERROR << "Create app failed " 
+      << crs_value->GetErrorMessage()[0].message;
+  }
+  // Get app status
+  aos::ResValue::Ptr grs_value = aosp->GetAppStastus("HELLO");
+  if (grs_value->IsSucceed()){
+    LOG_INFO << "Get app status succeed " << "HELLO";
+  }
+  else{
+    LOG_ERROR << "get app status failed "
+      << grs_value->GetErrorMessage()[0].message;
+  }
+  // Delete app
+  aos::ResValue::Ptr drs_value = aosp->DeleteApp("HELLO");
+  if (drs_value->IsSucceed()){
+    LOG_INFO << "Delete app succeed " << "HELLO";
+  }
+  else{
+    LOG_ERROR << "Delete app failed " 
+      << drs_value->GetErrorMessage()[0].message;
+  }
+
+  return 0;
+}
+```
+
+This example first create a application named `HELLO` by `aos::APP_TEMPLATE_BUILTIN_NEWS` built-in teample, and second get the `HELLO` status, and then delete the `HELLO` application.
+
+## Push index document
+
+For push operation, you'd be better off with [apliyun push index document reles](http://help.aliyun.com/document_detail/opensearch/api-reference/api-interface/data-manager.html "push index doument")
+
+```c++
+    // About the push
+	  enum PushItemType{
+	    ITEM_TYPE_ADD,
+	    ITEM_TYPE_UPDATE,
+	    ITEM_TYPE_DELETE
+	  };
+
+	// Create a push Item
+	PushItem::Ptr CreatePushItem(PushItemType type, const std::string &id);
+
+	// Create a push Form
+	PushForm::Ptr CreatePushForm(PushItem::Ptr push_item);
+
+	// Push a form to the server
+	ResValue::Ptr PushIndexDoc(const std::string &app_name,
+	  const std::string &table_name, 
+	  PushForm::Ptr push_form);
+```
+
+To push a index document, you'll use `aos::AliOpenSearch::PushIndexDoc` interface, but it needs a `aos::PushForm::Ptr` object, therefrom, you needs `aos::AliOpenSearch::CreatePushForm` to create a `aos::PushForm::Ptr`, but to create this object, you needs a `PushItem::Ptr`. you can use `aos::AliOpenSearch::CreatePushItem` to create a `aos::PushForm::Ptr`.
+
+Next, here is an example of push a index document to server.
+
+```c++
+  aos::ResValue::Ptr grs_value = aosp->GetAppStastus("HELLO");
+  if (grs_value->IsSucceed()){
+    LOG_INFO << "Get app status succeed " << "HELLO";
+  }
+  else{
+    LOG_ERROR << "get app status failed "
+      << grs_value->GetErrorMessage()[0].message;
+  }
+
+  aos::PushItem::Ptr push_item1 = aosp->CreatePushItem(
+    aos::PushItemType::ITEM_TYPE_ADD, "1");
+  push_item1->AddField("type_id", "12");
+  push_item1->AddField("cat_id", "13");
+  push_item1->AddField("title", "test");
+  push_item1->AddField("body", "This is a test, about something");
+  push_item1->AddField("url", "www.baidu.com");
+
+  aos::PushItem::Ptr push_item2 = aosp->CreatePushItem(
+    aos::PushItemType::ITEM_TYPE_ADD, "2");
+  push_item2->AddField("type_id", "12");
+  push_item2->AddField("cat_id", "13");
+  push_item2->AddField("title", "test");
+  push_item2->AddField("body", "This is a test, about something");
+  push_item2->AddField("url", "www.baidu.com");
+
+  aos::PushForm::Ptr push_form = aosp->CreatePushForm(push_item1);
+  push_form->AddPushItem(push_item2);
+
+  aos::ResValue::Ptr res = aosp->PushIndexDoc("HELLO", "main", push_form);
+
+  if (res->IsSucceed()){
+    LOG_INFO << "Delete the HELLO main table succeed";
+  }
+  else{
+    LOG_ERROR << "Delete the HELLO main table error"
+      << res->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+## suggest operator
+
+Suggest hit is a frequently used in the realy search world. belown is the relevant interface
+
+```c++
+    ResValue::Ptr SuggestHit(const std::string &app_name,
+      const std::string &query, 
+      const std::string &suggest_name,
+      int hit_count = 10);
+```
+
+To used this interfce you'd be better off with [suggest hit document](http://helpcdn.aliyun.com/document_detail/opensearch/api-reference/api-interface/suggest.html "suggest hit document"). Next, here is an example of get a search query suggest hit.
+
+```c++
+  aos::ResValue::Ptr res_value = aosp->SuggestHit("HELLO", 
+    "opensearch","test_suggest", 10);
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Reindex HELLO succeed";
+    Json::Value result = res_value->rep_json()[aos::JSON_RESULT];
+    Json::Value suggestion_json = result[aos::RES_SUGGESTIONS];
+    for (std::size_t i = 0; i < suggestion_json.size(); i++){
+      LOG_INFO << suggestion_json[i][aos::RES_SUGGESTIONS].asString();
+    }
+  }
+  else{
+    LOG_ERROR << "Reindex HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+## Index rebuild
+
+```c++
+    ResValue::Ptr ReindexApp(const std::string &app_name,
+      const std::string &operate = "",
+      const std::string &table_name = "");
+```
+
+To used this interfce you'd be better off with [Index rebuild document](http://helpcdn.aliyun.com/document_detail/opensearch/api-reference/api-interface/index-restructure.html "Index rebuild document"). Next, here is an example of rebuild and application index.
+
+```c++
+  aos::ResValue::Ptr res_value = aosp->ReindexApp("HELLO");
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Reindex HELLO succeed";
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << "Reindex HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+## Get error logging file
+
+
+```c++
+  enum SortMode{
+    SORT_ASC,
+    SORT_DESC
+  };
+  ResValue::Ptr GetAppErrorLog(const std::string &app_name,
+    int page, int page_size, SortMode sort_mode);
+```
+To used this interfce you'd be better off with [Get error logging file document](http://help.aliyun.com/document_detail/opensearch/api-reference/api-interface/errormsg.html "Get error logging file document"). Next, here is an example of get and application error logging file.
+
+```c++
+  aos::ResValue::Ptr res_value = aosp->GetAppErrorLog("HELLO",
+    2,2, aos::SortMode::SORT_ASC);
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Get Error Log HELLO succeed";
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << "Get Error Log HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+## About search
+
+The search operator is part of the core of the aliyun opensarch. `libali_opensearch` includes a set of easy-to-use interfaces, to avoid making mistakes and save the time of users.
+
+There are two types of search, the normal search and scroll search. 
+
+```c++
+    // Search
+    ResValue::Ptr Search(SearchForm::Ptr search_form);
+
+    // Scroll Search
+    ResValue::Ptr ScrollSearch(SearchForm::Ptr search_form, Scroll::Ptr scroll);
+```
+
+Each type of search requires an `aos::SearchForm::Ptr` object. To create an `aos::SearchForm::Ptr`, you needs following interface:
+
+```c++
+    // Create SearchFrom
+    SearchForm::Ptr CreateSearchForm(
+      Query::Ptr query, const std::string &app_name);
+```
+
+As aliyun opensearch official documentation [about search described](http://help.aliyun.com/document_detail/opensearch/api-reference/api-interface/search-related.html "about search described"). A search requestion a `query` and a `index_name` at least. therefore, to create an `aos::SearchForm::Ptr`, you needs an `aos::Query::Ptr` object first.
+
+```c++
+    // Create Query
+    Query::Ptr CreateQuery(QueryStanza::Ptr query_stanza);
+```
+
+While `query` defines seven different types of `stanza`. The `aos::QueryStanza::Ptr` is most important of these stanzas. To create an `aos::Query::Ptr`, you have to create `aos::QueryStanza::Ptr` first.
+
+```c++
+    // Create QueryStanza
+    QueryStanza::Ptr CreateQueryStanza(const std::string &index_name,
+      const std::string &key_word);
+```
+
+Next, here is an example of do a basic search.
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_config_stanza(cs);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Search HELLO succeed";
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << "Get Error Log HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+In order to obtain a better search result, we create an application that named `HELLO` with `aos::APP_TEMPLATE_BUILTIN_NEWS` templete, and insert the aliyun openserch official data.
+
+
+### The Stanzas
+
+Next, we are going to show the seven stanza. here is the interface that to create those stanzas.
+
+```c++
+    // -------------------------------------------------------------------------
+    // About the search
+    // Create ConfigStanza
+    ConfigStanza::Ptr CreateConfigStanza();
+
+    // Create QueryStanza
+    QueryStanza::Ptr CreateQueryStanza(const std::string &index_name,
+      const std::string &key_word);
+
+    // Create FilterStanza
+    FilterStanza::Ptr CreateFilterStanza(const std::string &filter_express);
+
+    // Create SortStanza
+    SortStanza::Ptr CreateSortStanza(
+      SortType type, const std::string &sort_express);
+
+    // Create AggregateStanza
+    AggregateStanza::Ptr CreateAggregateStanza(
+      const std::string &group_key, const std::string &agg_fun);
+
+    // Create DistinctStanza
+    DistinctStanza::Ptr CreateDistinctStanza(const std::string &dist_key);
+
+    // Create KvpairsStanza
+    KvpairsStanza::Ptr CreateKvpairsStanza(
+      const std::string &key, const std::string value);
+```
+
+There is no other way to create a stanza object except `aos::AliOpenSearch`. because we are used the `std::shared_ptr` to manager all of the object lifecycle. 
+
+### Query Stanza
+
+Query stanza is one of the most important part of `aos::Query`, To understand query stanza you'd be better off with [query stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/query-clause.html "query stanza document"). 
+
+An `aos::Query` could be more than one query condition, `libali_opensearch` provide a way to union `aos::QueryStanza::Ptr` object.
+
+```c++
+  enum QueryUnionType{
+    UNION_AND,
+    UNION_OR,
+    UNION_ANDNOT,
+    UNION_RANK
+  };
+
+  class QueryStanza : public noncopyable, public BaseReqValue{
+  public:
+    QueryStanza::Ptr OrdinaryUnion(QueryUnionType type,
+      QueryStanza::Ptr query_stanza);
+    QueryStanza::Ptr PriorityUnion(QueryUnionType type,
+      QueryStanza::Ptr query_stanza);
+  };
+```
+
+- `QueryStanza::Ptr QueryStanza::OrdinaryUnion(...)`, union two `aos::QueryStanza::Ptr` by same ordinary.
+- `QueryStanza::Ptr QueryStanza::PriorityUnion(...)`, union two `aos::QueryStanza::Ptr` by priority ordinary.
+
+Here is an example about the different union.
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("title", "北京大学");
+  aos::QueryStanza::Ptr qb = aosp->CreateQueryStanza("title", "浙江大学");
+  aos::QueryStanza::Ptr qc = aosp->CreateQueryStanza("type", "1");
+  
+  LOG_INFO << qa->Express();
+  LOG_INFO << qb->Express();
+  LOG_INFO << qc->Express();
+
+  aos::QueryStanza::Ptr qd = qa->OrdinaryUnion(
+    aos::QueryUnionType::UNION_OR, qb);
+  aos::QueryStanza::Ptr qe = qd->PriorityUnion(
+    aos::QueryUnionType::UNION_AND, qc);
+  aos::QueryStanza::Ptr qf = qd->PriorityUnion(
+    aos::QueryUnionType::UNION_RANK, qc);
+
+  LOG_INFO << qd->Express();
+  LOG_INFO << qe->Express();
+```
+
+The follwning is the output
+
+
+```
+title:'北京大学'
+title:'浙江大学'
+type:'1'
+title:'北京大学' OR title:'浙江大学'
+(title:'北京大学'OR title:'浙江大学') AND type:'1'
+```
+
+There is a special attention, the union operator will be create a new `aos::QueryStanza::Ptr` object and would not change the original object values.
+
+### Config Stanza
+
+Query stanza is one of the optional part of `aos::Query`, To understand config stanza you'd be better off with [config stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/config-clause.html "config stanza document"). 
+
+There are several major types of operator with `aos::ConfigStanza::Ptr` object.
+
+```c++
+    virtual const std::string Express();
+    virtual bool IsValue();
+    //
+    uint32 start() { return start_; }
+    void set_start(uint32 start) { start_ = start; }
+    //
+    uint32 hit();
+    void set_hit(uint32 hit){ hit_ = hit; }
+    //
+    TextFormat format() { return format_; }
+    void set_format(TextFormat format){ format_ = format; }
+    //
+    uint32 rerank_size() { return rerank_size_; }
+    void set_rerank_size(uint32 rerank_size){ rerank_size_ = rerank_size; }
+```
+
+Here is an example
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::ConfigStanza::Ptr cs = aosp->CreateConfigStanza();
+  cs->set_hit(1);
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_config_stanza(cs);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Search HELLO succeed";
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << "Get Error Log HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Filter Stanza
+
+`aos::FilterStanza` is very similar to `aos::QueryStanza` what implementation union operator. 
+
+
+```c++
+  enum FilterUnionType{
+    FILTER_UNION_TYPE_AND,
+    FILTER_UNION_TYPE_OR
+  };
+    virtual const std::string Express() { return filter_express_; }
+    virtual bool IsValue(){ return !filter_express_.empty(); };
+
+    FilterStanza::Ptr OrdinaryUnion(FilterUnionType type,
+      FilterStanza::Ptr filter_stanza);
+    FilterStanza::Ptr PriorityUnion(FilterUnionType type,
+      FilterStanza::Ptr filter_stanza);
+```
+To understand filter stanza you'd be better off with [filter stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/filter-clause.html "filter stanza document"). 
+
+Here is an example to show the fifference of the filter stanza union types.
+
+```c++
+
+  aos::FilterStanza::Ptr fa = aosp->CreateFilterStanza("category=2");
+  aos::FilterStanza::Ptr fb = aosp->CreateFilterStanza("create_time<140234560");
+  aos::FilterStanza::Ptr fc = aosp->CreateFilterStanza("(hit+sale)*rate>10000");
+  aos::FilterStanza::Ptr fd = fa->OrdinaryUnion(
+    aos::FilterUnionType::FILTER_UNION_TYPE_AND, fb);
+  aos::FilterStanza::Ptr fe = fd->PriorityUnion(
+    aos::FilterUnionType::FILTER_UNION_TYPE_OR, fc);
+
+  LOG_INFO << fa->Express();
+  LOG_INFO << fb->Express();
+  LOG_INFO << fc->Express();
+  LOG_INFO << fd->Express();
+  LOG_INFO << fe->Express();
+```
+
+The follwning is the output
+
+```c++
+category=2
+create_time<140234560
+(hit+sale)*rate>10000
+category=2 AND create_time<140234560
+(category=2 AND create_time<140234560) OR (hit+sale)*rate>10000
+```
+
+Here is an other example on how to used filter to process a requestion.
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::ConfigStanza::Ptr cs = aosp->CreateConfigStanza();
+  cs->set_hit(1);
+  aos::FilterStanza::Ptr fs = aosp->CreateFilterStanza("type_id=1");
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_config_stanza(cs);
+  query->set_filter_stanza(fs);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Sort Stanza
+
+`aos::SortStanza` has union operator as well, but unlike `aos::QueryStana`, it provides only `Ordinary` union. The below is the `aos::SortStanza`'s public interface
+
+```c++
+    virtual const std::string Express() { return sort_express_; }
+    virtual bool IsValue(){ return !sort_express_.empty(); };
+
+    SortStanza::Ptr UnionSort(SortStanza::Ptr sort_stanza);
+```
+
+To understand Sort stanza you'd be better off with [Sort stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/filter-clause.html "Sort stanza document"). 
+
+Here is an example to show the `aos::SortStanza::UnionSort` operator.  
+
+```c++
+  aos::SortStanza::Ptr sa = aosp->CreateSortStanza(
+    aos::SortType::ASC_TYPE, "RANK");
+  aos::SortStanza::Ptr sb = aosp->CreateSortStanza(
+    aos::SortType::ASC_TYPE, "(hits+comments)");
+  aos::SortStanza::Ptr sc = aosp->CreateSortStanza(
+    aos::SortType::ASC_TYPE, "type");
+  aos::SortStanza::Ptr sd = sa->UnionSort(sb);
+  aos::SortStanza::Ptr se = sd->UnionSort(sc);
+
+  LOG_INFO << sa->Express();
+  LOG_INFO << sb->Express();
+  LOG_INFO << sc->Express();
+  LOG_INFO << sd->Express();
+  LOG_INFO << se->Express();
+```
+
+The fownling is the output
+
+```
++RANK
++(hits+comments)
++type
++RANK;+(hits+comments)
++RANK;+(hits+comments);+type
+```
+
+Here is an other example on how to used Sort Stanza to process a requestion.
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::SortStanza::Ptr ss = aosp->CreateSortStanza(aos::SortType::ASC_TYPE, "type_id");
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_sort_stanza(ss);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Aggregate Stanza
+
+To understand Aggregate stanza you'd be better off with [Aggregate stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/aggregate-clause.html "Aggregate stanza document"). 
+
+The below is the `aos::AggregateStanza` public interface
+
+
+```c++
+    virtual const std::string Express();
+    virtual bool IsValue();
+
+   const std::string group_key();
+    // about the range
+    void AddAggRange(uint32 min, uint32 max);
+    void ClearRange();
+
+    // 
+    void AddAggFunc(const std::string &func_express);
+    void ClearAggFunc();
+
+    // filter
+    void set_agg_filter(const std::string &agg_filter);
+
+    // 
+    void set_max_group(uint32 max_group);
+    void set_agg_sampler_threshold(uint32 agg_sampler_threshold);
+    void set_agg_sampler_step(uint32 agg_sampler_step);
+```
+
+Here is an example to show how to used the `aos::AggregateStanza`
+
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::AggregateStanza::Ptr ags = aosp->CreateAggregateStanza(
+    "type_id", "count()");
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_aggregate_stanza(ags);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Distinct Stanza
+
+
+To understand Distinct stanza you'd be better off with [Distinct stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/distinct-clause.html "Distinct stanza document"). 
+
+
+The below is the `aos::DistinctStanza` public interface
+
+```c++
+    virtual const std::string Express();
+    virtual bool IsValue();
+
+    const std::string &dist_key() const;
+    //
+    void set_dist_times(uint32 dist_times);
+    uint32 dist_times();
+
+    //
+    void set_dist_count(uint32 dist_count);
+    uint32 dist_count();
+
+    //
+    void set_reserved(bool reserved);
+    bool reserved();
+
+    //
+    void set_update_total_hit(bool suth);
+    bool update_total_hit();
+
+    //
+    void set_dist_filter(const std::string &filter_express);
+    const std::string &dist_filter();
+    //
+    void add_grade(float grade);
+    void clear_grade();
+    const std::vector<float> &grade();
+```
+
+
+Here is an example to show how to used the `aos::DistinctStanza`
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::DistinctStanza::Ptr ds = aosp->CreateDistinctStanza("type_id");
+  ds->set_dist_count(2);
+  ds->set_dist_times(10);
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_distinct_stanza(ds);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Kvpairs Stanza
+
+To understand Kvpairs stanza you'd be better off with [Kvpairs stanza document](http://help.aliyun.com/document_detail/opensearch/api-reference/query-clause/kvpair-clause.html "Kvpairs stanza document"). 
+
+
+The below is the `aos::KvpairsStanza` public interface
+
+```c++
+    virtual const std::string Express();
+    virtual bool IsValue();
+
+    bool AddKvpair(const std::string &key, const std::string value);
+    void Clear();
+    std::set<std::string> &keyvalues();
+```
+
+Here is an example to show how to used the `aos::KvpairsStanza`
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+
+  aos::DistinctStanza::Ptr ds = aosp->CreateDistinctStanza("type_id");
+  ds->set_dist_count(2);
+  ds->set_dist_times(10);
+
+  aos::KvpairsStanza::Ptr kvs = 
+    aosp->CreateKvpairsStanza("duniqfield", "type_id");
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_distinct_stanza(ds);
+  query->set_kvpair_stanza(kvs);
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->Search(search_form);
+  if (res_value->IsSucceed()){
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << res_value->GetErrorMessage()[0].message;
+  }
+```
+
+The example above omits the public initalize `aos::AosGlobalContext::Ptr` and `aos::AliOpenSearch::Ptr`.
+
+### Scroll Search
+
+To used scroll search, you need to build an `aos::SearchForm::Ptr` and `aos::Scroll::Ptr` first. the below code is the `aos::AliOpenSearch` interface to create an `aos::Scroll::Ptr`
+
+```c++
+  enum ScrollTimeType{
+    SCROLL_TIME_SECOND,
+    SCROLL_TIME_MINUTE,
+    SCROLL_TIME_HOUR,
+    SCROLL_TIME_DAY,
+    SCROLL_TIME_WEEK
+  };
+    // Create Scroll
+    Scroll::Ptr CreateScroll(uint32 scroll_time, 
+      ScrollTimeType time_type = SCROLL_TIME_MINUTE,
+      const std::string &search_type = SCROLL_TYPE_SCAN,
+      const std::string &scroll_id = "");
+
+    // Scroll Search
+    ResValue::Ptr ScrollSearch(SearchForm::Ptr search_form, Scroll::Ptr scroll);
+```
+
+You can used the `aos::AliOpenSearch::ScrollSearch(...)` to process an scroll search. After the first time you run this code, the internal of the `aos::AliOpenSearch` will be automatic update the scroll search `scroll_id`. The next same request will getting the new reuslt.
+
+Here is an example to show how to used the scorll search
+
+```c++
+  aos::QueryStanza::Ptr qa = aosp->CreateQueryStanza("default", "搜索");
+  aos::ConfigStanza::Ptr cs = aosp->CreateConfigStanza();
+  cs->set_hit(1);
+
+  aos::Query::Ptr query = aosp->CreateQuery(qa);
+  query->set_config_stanza(cs);
+
+  aos::Scroll::Ptr scroll = aosp->CreateScroll(2);
+  scroll->scroll_time();
+  scroll->time_type();
+  scroll->scroll_id();
+
+  aos::SearchForm::Ptr search_form = aosp->CreateSearchForm(query, "HELLO");
+
+  aos::ResValue::Ptr res_value = aosp->ScrollSearch(search_form, scroll);
+  if (res_value->IsSucceed()){
+    LOG_INFO << "Search HELLO succeed";
+    LOG_INFO << res_value->rep_json().toStyledString();
+  }
+  else{
+    LOG_ERROR << "Get Error Log HELLO error"
+      << res_value->GetErrorMessage()[0].message;
+  }
+  aosp->ScrollSearch(search_form, scroll);
+  LOG_INFO << scroll->scroll_id();
+```
+
+## How to Replace the logging system
+
+By default, the `libali_opensearch` used the google logging system `glog`. We have also provided the easy way to replace the logging system.
+
+The logging system define in the header file `src/base/logging.h`
+
+
+```c++
+//#define EASY_LOGGING_CPP
+#ifdef EASY_LOGGING_CPP
+#include "easylogging++.h"
+#endif
+
+//#define GOOGLE_GLOG_LIBRARY
+#ifdef GOOGLE_GLOG_LIBRARY
+#include "glog/logging.h"
+#endif
+
+namespace aos{
+
+#ifdef GOOGLE_GLOG_LIBRARY
+
+#define LOG_INFO LOG(INFO)
+#define LOG_WARNING LOG(WARNING)
+#define LOG_ERROR LOG(ERROR)
+
+#define DLOG_INFO DLOG(INFO)
+#define DLOG_WARNING DLOG(WARNING)
+#define DLOG_ERROR DLOG(WARNING)
+#else
+
+#define LOG_INFO std::cout
+#define LOG_WARNING std::cout
+#define LOG_ERROR std::cout
+
+#define DLOG_INFO std::cout
+#define DLOG_WARNING std::cout
+#define DLOG_ERROR std::cout
+#endif
+}
+```
+
+We are used logging indirectly by using the macro definition. so you can replace the logging system by you want. if you do not want to build glog, you can generator project files by the belown command
+
+```bash
+cmake .. -DBUILD_CURL_TESTS=OFF -DBUILD_CURL_EXE=OFF -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DHTTP_ONLY=ON -DUSE_GLOG=OFF
+```
+
+## 当前状态
+
+- [travis-ci.org](https://travis-ci.org/khvysofq/aos "travis-ci.org") 已经编译通过，同时也在Windows平台上面编译通过。
+- [coveralls.io](https://coveralls.io/github/khvysofq/aos?branch=master")，单元测试覆盖率达到95%
+- 在Ubuntu 64平台下，使用valgrind对所有的单元测试程序进行内存检查通过。您可以使用 `git_path/aliyun_opensearch/valgrind_test/valgrind_test.sh`这个脚本文件对所有的单元测试进行验证。
+- [linthub.io](https://linthub.io/khvysofq/aos/cac6c646118722578885588e38c2b96a64bb1db5) 代码风格检查完成。linthub对于C++的代码风格检查使用的是`cpplint`，但是却不支持一些过滤器，比如禁止对C++11代码风格的警告，因此有一些代码风格被注释了，并没有完全遵守linthub.io的检查结果。不过可以在本地进行下载 [cpplint.py](https://pypi.python.org/pypi/cpplint") 进行代码风格检查，同时使用如下的过滤参数 `--filter=-build/include_what_you_use,-runtime/references,-readability/casting,-build/c++11,-runtime/printf,-runtime/threadsafe_fn`对`git_path/aliyun_opensearch/src`目录下的代码进行风格检查。
+
+
 ## 编译配置
 
 现在的`libali_opensearh`是一个私有的项目，因此只能够权限的人下载，除了作者之外只有`opensource@alibaba-inc.com`。当前的项目会依赖四个开源库，都已经以git submodule的形式链接到项目中了，因此你可以直接下载下来进行编译，不需要再去配置额外的库或者环境。
